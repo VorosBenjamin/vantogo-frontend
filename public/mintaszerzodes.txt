@@ -1,0 +1,42 @@
+========================================================================
+                      BÉRLETI SZERZŐDÉS (MINTA)
+========================================================================
+amely létrejött egyrészről a VanToGo! gépjármű bérbeadói:
+Bérbeadó: Szabó Levente EV. & Somlai Dénes EV.
+Cím: 1108 Budapest, Diósgyőri utca 14.
+Adószám: 12345678-1-42
+
+másrészről mint Bérlő között az alábbi feltételekkel:
+
+1. A BÉRLET TÁRGYA:
+A Bérbeadó bérbe adja, a Bérlő pedig bérbe veszi a Bérbeadó tulajdonát
+képező személygépjárművet (kisbuszt) az alábbi adatokkal:
+- Jármű típusa: Mercedes-Benz Vito / Opel Vivaro / Mercedes-Benz Viano
+- Férőhelyek száma: 8-9 fő
+- Hatósági rendszám: [Rendszám]
+
+2. A BÉRLET IDŐTARTAMA ÉS DÍJA:
+- Bérlet kezdete: [Átvétel dátuma és időpontja]
+- Bérlet vége: [Leadás dátuma és időpontja]
+- Napi bérleti díj: [Napi ár] Ft / nap
+- Kaució összege: 200.000 Ft (azaz Kettőszázezer forint)
+
+3. KILOMÉTER HASZNÁLAT:
+A napi bérleti díj 250 km/nap futásteljesítményt tartalmaz. 
+Az ezen felüli használat díja 90 Ft/km.
+
+4. A KAUCIÓ VISSZAFIZETÉSE:
+A kaució a gépjármű sérülésmentes, tele tankkal történő visszaadásakor
+teljes összegben visszajár a Bérlő részére.
+
+5. BIZTOSÍTÁS ÉS FELELŐSSÉG:
+A gépjármű érvényes kötelező felelősségbiztosítással és CASCO 
+biztosítással rendelkezik. Káresemény esetén a Bérlő önrésze a kár 
+10%-a, de minimum 150.000 Ft. 
+
+Bérlő aláírásával igazolja, hogy a bérleti feltételeket elfogadja.
+
+Aláírások:
+
+...................................      ...................................
+            Bérbeadó                                  Bérlő

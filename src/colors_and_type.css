@@ -1,0 +1,261 @@
+/* ============================================================
+   VanToGo! — Design System Foundations
+   colors_and_type.css
+   Brand: minibus / microbus rental, Budapest (HU)
+   Direction: "Open road, warm welcome" — confident GO-green +
+   golden-hour amber on warm paper neutrals. Human, premium, trustworthy.
+   ============================================================ */
+
+/* ---------- Webfonts (Google Fonts) ----------
+   Display : Bricolage Grotesque  — characterful, friendly, modern
+   Body/UI : Hanken Grotesk       — clean, warm, highly legible
+   Mono    : JetBrains Mono       — prices, plate-style specs, code
+   These are linked from Google Fonts. If you need offline copies,
+   download the .ttf files into /fonts and swap the @import for @font-face. */
+@import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Hanken+Grotesk:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap');
+
+:root {
+  /* ============================================================
+     1. CORE COLOR PALETTE (raw values — don't reference directly
+        in components; use the semantic tokens below)
+     ============================================================ */
+
+  /* --- Brand: GO-green (the "Go" in VanToGo!) — movement, nature, go-light --- */
+  --go-50:  #EEF7F0;
+  --go-100: #D6ECDD;
+  --go-200: #AEDAC0;
+  --go-300: #7BC09B;
+  --go-400: #46A472;
+  --go-500: #1F8A54;   /* core brand */
+  --go-600: #16753F;   /* primary action */
+  --go-700: #115E33;   /* action hover / pressed */
+  --go-800: #0E3B28;   /* "forest" — dark sections, deep text */
+  --go-900: #0A2A1D;
+
+  /* --- Accent: Golden-hour amber — warmth, optimism, the open road --- */
+  --amber-50:  #FBF3E1;
+  --amber-100: #F8E7C0;
+  --amber-200: #F3D38C;
+  --amber-300: #ECBC57;
+  --amber-400: #E7A634;   /* core accent */
+  --amber-500: #D6891C;   /* accent hover */
+  --amber-600: #B26C12;
+
+  /* --- Warm neutrals (paper / ink) --- */
+  --paper:    #FAF6EE;   /* page background — warm cream */
+  --paper-2:  #F4EEE0;   /* alt section background — warm sand */
+  --sand:     #ECE3D0;   /* deeper sand / wells */
+  --card:     #FFFFFF;   /* card surfaces */
+  --line:     #E6DECB;   /* hairline borders on paper */
+  --line-2:   #D8CEB6;   /* stronger dividers */
+
+  --ink-900: #16201A;    /* primary text — warm near-black */
+  --ink-700: #34403A;    /* strong secondary */
+  --ink-500: #5C675F;    /* secondary text */
+  --ink-400: #7C867E;    /* muted / captions */
+  --ink-300: #A7AFA8;    /* disabled / placeholder */
+
+  /* --- Semantic status (harmonised, warm) --- */
+  --success: #1F8A54;
+  --success-bg: #E4F2E9;
+  --warning: #D6891C;
+  --warning-bg: #FBEFD4;
+  --danger:  #C2452C;    /* terracotta-red */
+  --danger-bg: #F8E2DC;
+  --info:    #2C6E8F;    /* muted travel blue */
+  --info-bg: #E0EDF3;
+
+  /* ============================================================
+     2. SEMANTIC COLOR TOKENS (use these in components)
+     ============================================================ */
+  --bg:            var(--paper);
+  --bg-alt:        var(--paper-2);
+  --bg-well:       var(--sand);
+  --surface:       var(--card);
+  --surface-dark:  var(--go-800);
+
+  --fg:            var(--ink-900);   /* primary text */
+  --fg-muted:      var(--ink-500);   /* secondary text */
+  --fg-subtle:     var(--ink-400);   /* captions / meta */
+  --fg-ondark:     #F4F0E6;          /* text on green/ink surfaces */
+  --fg-ondark-muted: #BFCDC2;
+
+  --brand:         var(--go-600);
+  --brand-strong:  var(--go-800);
+  --accent:        var(--amber-400);
+
+  --border:        var(--line);
+  --border-strong: var(--line-2);
+
+  --link:          var(--go-700);
+  --link-hover:    var(--go-600);
+  --focus-ring:    color-mix(in oklab, var(--go-500) 55%, white);
+
+  /* ============================================================
+     3. TYPOGRAPHY
+     ============================================================ */
+  --font-display: "Bricolage Grotesque", "Hanken Grotesk", system-ui, sans-serif;
+  --font-sans:    "Hanken Grotesk", system-ui, -apple-system, Segoe UI, sans-serif;
+  --font-mono:    "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  /* Fluid type scale (clamp: min @ 360px → max @ 1280px) */
+  --fs-display: clamp(3rem, 1.6rem + 6.2vw, 5.25rem);   /* 48 → 84  hero */
+  --fs-h1:      clamp(2.25rem, 1.4rem + 3.8vw, 3.5rem);  /* 36 → 56 */
+  --fs-h2:      clamp(1.75rem, 1.25rem + 2.2vw, 2.5rem); /* 28 → 40 */
+  --fs-h3:      clamp(1.375rem, 1.1rem + 1.2vw, 1.75rem);/* 22 → 28 */
+  --fs-h4:      clamp(1.125rem, 1rem + 0.5vw, 1.375rem); /* 18 → 22 */
+  --fs-lead:    clamp(1.125rem, 1.02rem + 0.45vw, 1.3125rem); /* 18 → 21 */
+  --fs-body:    1.0625rem;   /* 17 */
+  --fs-sm:      0.9375rem;   /* 15 */
+  --fs-caption: 0.8125rem;   /* 13 */
+  --fs-overline:0.75rem;     /* 12 */
+
+  --lh-tight: 1.04;
+  --lh-snug:  1.18;
+  --lh-body:  1.62;
+
+  --tracking-tight: -0.02em;
+  --tracking-normal: 0;
+  --tracking-wide: 0.02em;
+  --tracking-overline: 0.14em;
+
+  /* ============================================================
+     4. SPACING (4px base)
+     ============================================================ */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+  --space-20: 80px;
+  --space-24: 96px;
+  --space-32: 128px;
+
+  /* ============================================================
+     5. RADII — friendly but not bubbly
+     ============================================================ */
+  --r-xs: 6px;
+  --r-sm: 10px;
+  --r-md: 14px;
+  --r-lg: 20px;
+  --r-xl: 28px;
+  --r-2xl: 36px;
+  --r-pill: 999px;
+
+  /* ============================================================
+     6. SHADOWS — soft, warm, ink-green tinted
+     ============================================================ */
+  --shadow-xs: 0 1px 2px rgba(14, 59, 40, 0.06);
+  --shadow-sm: 0 1px 2px rgba(14, 59, 40, 0.06), 0 2px 6px rgba(14, 59, 40, 0.06);
+  --shadow-md: 0 4px 10px rgba(14, 59, 40, 0.08), 0 2px 4px rgba(14, 59, 40, 0.05);
+  --shadow-lg: 0 14px 30px rgba(14, 59, 40, 0.12), 0 4px 10px rgba(14, 59, 40, 0.06);
+  --shadow-xl: 0 28px 64px rgba(14, 59, 40, 0.16), 0 8px 20px rgba(14, 59, 40, 0.08);
+  --shadow-amber: 0 8px 24px rgba(214, 137, 28, 0.28);
+  --shadow-brand: 0 8px 22px rgba(22, 117, 63, 0.26);
+
+  /* ============================================================
+     7. MOTION
+     ============================================================ */
+  --ease-out: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --dur-fast: 120ms;
+  --dur: 200ms;
+  --dur-slow: 360ms;
+
+  /* Layout */
+  --container: 1200px;
+  --container-wide: 1320px;
+  --gutter: clamp(20px, 5vw, 64px);
+}
+
+/* ============================================================
+   8. BASE / RESET-ish + SEMANTIC ELEMENT STYLES
+   Apply by linking this file. Components can also just use the
+   variables above. The classes below give ready-made type roles.
+   ============================================================ */
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-sans);
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  font-feature-settings: "ss01", "cv01";
+}
+
+/* Type roles ---------------------------------------------------- */
+.t-display {
+  font-family: var(--font-display);
+  font-size: var(--fs-display);
+  line-height: 1.08;
+  letter-spacing: -0.015em;
+  font-weight: 500;
+}
+h1, .t-h1 {
+  font-family: var(--font-display);
+  font-size: var(--fs-h1);
+  line-height: var(--lh-tight);
+  letter-spacing: var(--tracking-tight);
+  font-weight: 700;
+  margin: 0 0 0.4em;
+}
+h2, .t-h2 {
+  font-family: var(--font-display);
+  font-size: var(--fs-h2);
+  line-height: var(--lh-snug);
+  letter-spacing: var(--tracking-tight);
+  font-weight: 700;
+  margin: 0 0 0.4em;
+}
+h3, .t-h3 {
+  font-family: var(--font-display);
+  font-size: var(--fs-h3);
+  line-height: var(--lh-snug);
+  font-weight: 600;
+  margin: 0 0 0.4em;
+}
+h4, .t-h4 {
+  font-family: var(--font-sans);
+  font-size: var(--fs-h4);
+  line-height: 1.3;
+  font-weight: 700;
+  margin: 0 0 0.4em;
+}
+.t-lead {
+  font-size: var(--fs-lead);
+  line-height: 1.55;
+  color: var(--fg-muted);
+  font-weight: 400;
+}
+p, .t-body { font-size: var(--fs-body); line-height: var(--lh-body); }
+.t-sm { font-size: var(--fs-sm); line-height: 1.5; }
+.t-caption { font-size: var(--fs-caption); line-height: 1.4; color: var(--fg-subtle); }
+.t-overline {
+  font-size: var(--fs-overline);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-overline);
+  font-weight: 700;
+  color: var(--brand);
+}
+.t-mono { font-family: var(--font-mono); font-feature-settings: "tnum"; }
+
+a { color: var(--link); text-decoration: none; }
+a:hover { color: var(--link-hover); }
+
+::selection { background: var(--amber-200); color: var(--ink-900); }
+
+:focus-visible {
+  outline: 3px solid var(--focus-ring);
+  outline-offset: 2px;
+  border-radius: var(--r-xs);
+}

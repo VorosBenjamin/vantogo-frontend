@@ -1,0 +1,11 @@
+/* Clean index.css to prevent default Vite layouts from interfering with our custom styles */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+#root {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
