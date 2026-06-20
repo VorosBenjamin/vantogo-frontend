@@ -413,6 +413,7 @@ img { max-width: 100%; }
 .accessory-card {
   box-shadow: var(--shadow-sm);
   transition: transform var(--dur) var(--ease-out), box-shadow var(--dur) var(--ease-out) !important;
+  cursor: pointer;
 }
 
 .accessory-card:hover {

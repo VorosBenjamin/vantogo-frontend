@@ -60,10 +60,11 @@ export function AccessoriesPage({ openAccessory }) {
               ? '2 500 Ft/nap-tól'
               : `${item.price.toLocaleString('hu-HU')} Ft/nap`;
 
-            return (
+             return (
               <div 
                 key={item.id} 
                 className="card-surface accessory-card"
+                onClick={() => openAccessory && openAccessory(item)}
                 style={{
                   borderRadius: 'var(--r-xl)',
                   border: '1px solid var(--line)',
@@ -122,7 +123,11 @@ export function AccessoriesPage({ openAccessory }) {
                     <Button 
                       variant="primary" 
                       size="sm"
-                      onClick={() => openAccessory && openAccessory(item)}
+                      iconRight="arrow-right"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        openAccessory && openAccessory(item);
+                      }}
                     >
                       Részletek
                     </Button>
