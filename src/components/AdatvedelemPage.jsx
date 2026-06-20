@@ -10,9 +10,9 @@ export function AdatvedelemPage({ navigate }) {
         <p>A VanToGo! gépjármű bérbeadói elkötelezettek a személyes adatok védelme iránt. Az alábbiakban részletezzük az adatkezelési szabályainkat.</p>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 300px', gap: '40px', alignItems: 'start' }}>
+      <div className="doc-layout">
         {/* Bal oldali tartalom */}
-        <div className="card-surface" style={{ padding: '32px', border: '1px solid var(--line)', borderRadius: 'var(--r-xl)', background: 'var(--card)', display: 'flex', flexDirection: 'column', gap: '28px' }}>
+        <div className="card-surface doc-content">
           
           <section>
             <h3 style={{ margin: '0 0 12px 0', fontSize: '20px', color: 'var(--go-800)', borderBottom: '1px solid var(--line)', paddingBottom: '8px' }}>
@@ -77,7 +77,7 @@ export function AdatvedelemPage({ navigate }) {
         </div>
 
         {/* Jobb oldali sáv */}
-        <aside style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+        <aside className="doc-sidebar">
           <div className="card-surface" style={{ padding: '24px', border: '1px solid var(--line)', borderRadius: 'var(--r-xl)', background: 'var(--go-50)' }}>
             <h4 style={{ margin: '0 0 12px 0', fontSize: '16px', color: 'var(--go-900)', display: 'flex', alignItems: 'center', gap: '8px' }}>
               <Icon name="shield-check" size={18} /> Biztonságos adatkezelés
