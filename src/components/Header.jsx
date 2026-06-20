@@ -18,8 +18,10 @@ export function Header({ current, navigate, onBook }) {
   const links = [
     { id: 'home', label: 'Kezdőlap' },
     { id: 'fleet', label: 'Autóink' },
+    { id: 'accessories', label: 'Kiegészítők' },
     { id: 'segments', label: 'Kinek ajánljuk' },
     { id: 'faq', label: 'GY.I.K' },
+    { id: 'contact', label: 'Kapcsolat' },
   ];
 
   return (

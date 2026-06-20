@@ -24,15 +24,16 @@ export function Footer({ navigate }) {
             <h5>Oldalak</h5>
             <a onClick={() => navigate && navigate('home')}>Kezdőlap</a>
             <a onClick={() => navigate && navigate('fleet')}>Autóink</a>
+            <a onClick={() => navigate && navigate('accessories')}>Kiegészítők</a>
             <a onClick={() => navigate && navigate('segments')}>Kinek ajánljuk</a>
             <a onClick={() => navigate && navigate('faq')}>Gyakori kérdések</a>
-            <a href="#">Blog</a>
+            <a onClick={() => navigate && navigate('contact')}>Kapcsolat</a>
           </div>
           <div>
             <h5>Információ</h5>
             <a onClick={() => navigate && navigate('aszf')}>Á.SZ.F</a>
             <a onClick={() => navigate && navigate('aszf')}>Bérlési feltételek</a>
-            <a href="#">Adatvédelem</a>
+            <a onClick={() => navigate && navigate('privacy')}>Adatvédelem</a>
             <a onClick={() => navigate && navigate('faq')}>GY.I.K</a>
           </div>
           <div>

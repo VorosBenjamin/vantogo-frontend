@@ -7,12 +7,17 @@ import { BookingModal } from './components/BookingModal';
 import { FleetPage } from './components/FleetPage';
 import { FAQPage } from './components/FAQPage';
 import { ASZFPage } from './components/ASZFPage';
+import { AdatvedelemPage } from './components/AdatvedelemPage';
+import { ContactPage } from './components/ContactPage';
+import { AccessoriesPage } from './components/AccessoriesPage';
+import { AccessoryDetails } from './components/AccessoryDetails';
 import { FLEET } from './components/data';
 import './styles.css';
 
 export function VanToGoApp() {
-  const [view, setView] = useState('home'); // 'home' | 'fleet' | 'faq' | 'aszf' | 'vehicle-details'
+  const [view, setView] = useState('home'); // 'home' | 'fleet' | 'faq' | 'aszf' | 'privacy' | 'contact' | 'accessories' | 'accessory-details' | 'vehicle-details'
   const [selectedVehicle, setSelectedVehicle] = useState(null);
+  const [selectedAccessory, setSelectedAccessory] = useState(null);
   const [bookingData, setBookingData] = useState(null); // When not null, opens BookingModal
 
   const scrollToAnchor = (anchorId) => {
@@ -28,29 +33,16 @@ export function VanToGoApp() {
     // In Wix environment, we also dispatch an event
     window.dispatchEvent(new CustomEvent('vantogoNavigate', { detail: id }));
 
-    if (id === 'home') {
-      setView('home');
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    } else if (id === 'fleet') {
-      setView('fleet');
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    } else if (id === 'faq') {
-      setView('faq');
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    } else if (id === 'aszf') {
-      setView('aszf');
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    } else if (id === 'segments') {
+    setView(id);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    if (id === 'segments') {
       // If we want to view segments, they are on the Home page, so switch to home first
-      if (view !== 'home') {
-        setView('home');
-        // Wait for React to render the Home view before scrolling
-        setTimeout(() => {
-          scrollToAnchor('segments-anchor');
-        }, 100);
-      } else {
+      setView('home');
+      // Wait for React to render the Home view before scrolling
+      setTimeout(() => {
         scrollToAnchor('segments-anchor');
-      }
+      }, 100);
     }
   };
 
@@ -58,6 +50,13 @@ export function VanToGoApp() {
     console.log('Opening vehicle:', vehicle);
     setSelectedVehicle(vehicle);
     setView('vehicle-details');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const openAccessory = (accessory) => {
+    console.log('Opening accessory:', accessory);
+    setSelectedAccessory(accessory);
+    setView('accessory-details');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
@@ -78,7 +77,7 @@ export function VanToGoApp() {
     });
   };
 
-  // Called from VehicleDetails form submit with computed prices/days
+  // Called from VehicleDetails/AccessoryDetails form submit with computed prices/days
   const handleVehicleBook = (computedData) => {
     setBookingData(computedData);
   };
@@ -105,6 +104,10 @@ export function VanToGoApp() {
       {view === 'fleet' && (
         <FleetPage openVehicle={openVehicle} />
       )}
+
+      {view === 'accessories' && (
+        <AccessoriesPage openAccessory={openAccessory} />
+      )}
       
       {view === 'faq' && (
         <FAQPage navigate={navigate} />
@@ -113,11 +116,27 @@ export function VanToGoApp() {
       {view === 'aszf' && (
         <ASZFPage navigate={navigate} />
       )}
+
+      {view === 'privacy' && (
+        <AdatvedelemPage navigate={navigate} />
+      )}
+
+      {view === 'contact' && (
+        <ContactPage navigate={navigate} />
+      )}
       
       {view === 'vehicle-details' && (
         <VehicleDetails 
           v={selectedVehicle} 
           onBack={() => navigate('fleet')} 
+          onBook={handleVehicleBook} 
+        />
+      )}
+
+      {view === 'accessory-details' && (
+        <AccessoryDetails 
+          a={selectedAccessory} 
+          onBack={() => navigate('accessories')} 
           onBook={handleVehicleBook} 
         />
       )}

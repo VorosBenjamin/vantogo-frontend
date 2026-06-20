@@ -5,7 +5,7 @@
 @import url('./colors_and_type.css');
 @import url('./components.css');
 
-html, body { overflow-x: hidden; max-width: 100%; }
+html, body { overflow-x: clip; max-width: 100%; }
 html { scroll-behavior: smooth; }
 body { margin: 0; background: var(--paper); color: var(--fg); }
 img { max-width: 100%; }
@@ -391,6 +391,18 @@ img { max-width: 100%; }
 .modal-content::-webkit-scrollbar-thumb:hover {
   background: var(--go-400);
 }
+/* ---------- Team Card and Accessory Card Transitions ---------- */
+.team-card, .accessory-card {
+  box-shadow: var(--shadow-sm);
+  transition: transform var(--dur), box-shadow var(--dur), border-color var(--dur) !important;
+}
 
+.team-card:hover, .accessory-card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--go-300) !important;
+}
 
-
+.team-card:hover .team-photo {
+  transform: scale(1.04);
+}

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Icon, Button } from './Primitives';
-import { FLEET } from './data';
+import { FLEET, ACCESSORIES } from './data';
 
 // Generate time options in 30-minute intervals
 const TIME_OPTIONS = [];
@@ -72,14 +72,28 @@ export function BookingModal({ bookingData, onClose, onConfirm }) {
         const calculatedDays = Math.ceil(diffHours / 24);
         setEditDays(calculatedDays);
         
-        const selectedVehicle = FLEET.find(f => f.id === editVehicleId) || FLEET[0];
-        const pricePerDay = parseInt(selectedVehicle.price.replace(/\s/g, ''), 10);
-        let total = calculatedDays * pricePerDay;
-        
-        if (editDeliveryOption === 'hazhoz') {
-          total += 10000;
+        if (currentBooking.isAccessory) {
+          const selectedAccessory = ACCESSORIES.find(a => a.id === editVehicleId) || ACCESSORIES[0];
+          let pricePerDay = 0;
+          if (selectedAccessory.id === 'thule-jetbag-3000') {
+            if (calculatedDays <= 3) pricePerDay = 2500;
+            else if (calculatedDays <= 7) pricePerDay = 2000;
+            else pricePerDay = 1500;
+          } else {
+            pricePerDay = parseInt(selectedAccessory.price.replace(/\s/g, ''), 10);
+          }
+          let total = calculatedDays * pricePerDay;
+          setEditTotalPrice(total);
+        } else {
+          const selectedVehicle = FLEET.find(f => f.id === editVehicleId) || FLEET[0];
+          const pricePerDay = parseInt(selectedVehicle.price.replace(/\s/g, ''), 10);
+          let total = calculatedDays * pricePerDay;
+          
+          if (editDeliveryOption === 'hazhoz') {
+            total += 10000;
+          }
+          setEditTotalPrice(total);
         }
-        setEditTotalPrice(total);
       } else {
         setEditDays(0);
         setEditTotalPrice(0);
@@ -88,7 +102,7 @@ export function BookingModal({ bookingData, onClose, onConfirm }) {
       setEditDays(0);
       setEditTotalPrice(0);
     }
-  }, [editStartDate, editPickupTime, editEndDate, editReturnTime, editDeliveryOption, editVehicleId]);
+  }, [editStartDate, editPickupTime, editEndDate, editReturnTime, editDeliveryOption, editVehicleId, currentBooking.isAccessory]);
 
   const handleSaveSummaryEdit = (e) => {
     e.preventDefault();
@@ -104,12 +118,15 @@ export function BookingModal({ bookingData, onClose, onConfirm }) {
       return;
     }
 
-    const selectedVehicle = FLEET.find(f => f.id === editVehicleId) || FLEET[0];
+    const selectedItem = currentBooking.isAccessory
+      ? (ACCESSORIES.find(a => a.id === editVehicleId) || ACCESSORIES[0])
+      : (FLEET.find(f => f.id === editVehicleId) || FLEET[0]);
 
     // Update current booking state locally
     const updatedBooking = {
+      ...currentBooking,
       vehicleId: editVehicleId,
-      vehicleName: selectedVehicle.name,
+      vehicleName: selectedItem.name,
       startDate: editStartDate,
       pickupTime: editPickupTime,
       endDate: editEndDate,
@@ -192,9 +209,11 @@ export function BookingModal({ bookingData, onClose, onConfirm }) {
   return (
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-        <button className="modal-close" onClick={onClose} aria-label="Bezárás">
-          <Icon name="x" size={20} />
-        </button>
+        {step === 1 && !success && (
+          <button className="modal-close" onClick={onClose} aria-label="Bezárás">
+            <Icon name="x" size={20} />
+          </button>
+        )}
 
         {success ? (
           <div style={{ textAlign: 'center', paddingBlock: '20px' }}>
@@ -226,14 +245,17 @@ export function BookingModal({ bookingData, onClose, onConfirm }) {
 
                 <div className="fields" style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
                   <div className="field">
-                    <label>Kisbusz kiválasztása</label>
+                    <label>{currentBooking.isAccessory ? 'Kiegészítő kiválasztása' : 'Kisbusz kiválasztása'}</label>
                     <select 
                       className="select" 
                       value={editVehicleId}
                       onChange={(e) => setEditVehicleId(e.target.value)}
                       style={{ width: '100%' }}
                     >
-                      {FLEET.map(f => <option key={f.id} value={f.id}>{f.name}</option>)}
+                      {currentBooking.isAccessory 
+                        ? ACCESSORIES.map(a => <option key={a.id} value={a.id}>{a.name}</option>)
+                        : FLEET.map(f => <option key={f.id} value={f.id}>{f.name}</option>)
+                      }
                     </select>
                   </div>
 

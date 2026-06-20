@@ -41,7 +41,7 @@ export function Home({ navigate, openVehicle, onBook }) {
     <div className="view">
       {/* HERO */}
       <section className="hero">
-        <div className="hero-media"><img src="/assets/fleet/crop-vito-black.png" alt="VanToGo kisbusz" /></div>
+        <div className="hero-media"><img src="https://vorosbenjamin.github.io/vantogo-frontend/assets/fleet/crop-vito-black.png" alt="VanToGo kisbusz" /></div>
         <div className="container hero-inner">
           <div className="hero-copy">
             <span className="eyebrow"><span className="dot"></span>Budapest · 8–9 személyes kisbuszok</span>
