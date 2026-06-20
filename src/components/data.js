@@ -43,7 +43,7 @@ export const FLEET = [
   },
   {
     id: 'viano-8',
-    name: 'Mercedes-Benz Viano',
+    name: 'Mercedes-Benz Viano 115 CDI L',
     seats: '8 személyes',
     trans: 'Automata',
     km: '250 km/nap',
@@ -113,7 +113,7 @@ export const ACCESSORIES = [
     type: 'Tetőbox',
     price: '2 500',
     deposit: '20 000 Ft (Autóval bérlés esetén: 0 Ft)',
-    photo: 'https://static.wixstatic.com/media/f1c7ce_ec2739b7471f499bbd50d85a6252ffd3~mv2.jpg',
+    photo: 'https://vorosbenjamin.github.io/vantogo-frontend/assets/accessories/jetbag.png',
     tagline: '225x39x30 cm méretű, tágas tetőbox extra csomagok szállításához.',
     specs: {
       méret: '225 x 39 x 30 cm',
@@ -135,7 +135,7 @@ export const ACCESSORIES = [
     type: 'Téli felszerelés',
     price: '1 000',
     deposit: '0 Ft',
-    photo: 'https://images.unsplash.com/photo-1542282088-fe8426682b8f?auto=format&fit=crop&w=800&q=80',
+    photo: 'https://vorosbenjamin.github.io/vantogo-frontend/assets/accessories/holanc.jpg',
     tagline: 'Biztonságos és megbízható közlekedés téli, havas útviszonyok között.',
     specs: {
       típus: 'Gyors rögzítésű hólánc',
@@ -152,7 +152,7 @@ export const ACCESSORIES = [
     type: 'Szállítóeszköz',
     price: '5 000',
     deposit: '30 000 Ft (Autóval bérlés esetén: 0 Ft)',
-    photo: 'https://images.unsplash.com/photo-1582298538104-fc2c0a5a00d3?auto=format&fit=crop&w=800&q=80',
+    photo: 'https://vorosbenjamin.github.io/vantogo-frontend/assets/accessories/kerekpartarto.png',
     tagline: 'Vonóhorogra szerelhető, lehajtható kerékpártartó 3 bicikli szállításához.',
     specs: {
       kapacitás: '3 db kerékpár',

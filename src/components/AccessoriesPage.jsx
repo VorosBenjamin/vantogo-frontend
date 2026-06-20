@@ -70,11 +70,10 @@ export function AccessoriesPage({ openAccessory }) {
                   background: 'var(--card)',
                   overflow: 'hidden',
                   display: 'flex',
-                  flexDirection: 'column',
-                  transition: 'transform var(--dur), box-shadow var(--dur)'
+                  flexDirection: 'column'
                 }}
               >
-                <div style={{ position: 'relative', height: '220px', overflow: 'hidden', background: '#f5f5f5' }}>
+                <div className="ph" style={{ position: 'relative', height: '220px', overflow: 'hidden', background: '#f5f5f5' }}>
                   <img 
                     src={item.photo} 
                     alt={item.name} 

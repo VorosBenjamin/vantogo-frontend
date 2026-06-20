@@ -392,12 +392,12 @@ img { max-width: 100%; }
   background: var(--go-400);
 }
 /* ---------- Team Card and Accessory Card Transitions ---------- */
-.team-card, .accessory-card {
+.team-card {
   box-shadow: var(--shadow-sm);
   transition: transform var(--dur), box-shadow var(--dur), border-color var(--dur) !important;
 }
 
-.team-card:hover, .accessory-card:hover {
+.team-card:hover {
   transform: translateY(-6px);
   box-shadow: var(--shadow-lg);
   border-color: var(--go-300) !important;
@@ -405,4 +405,22 @@ img { max-width: 100%; }
 
 .team-card:hover .team-photo {
   transform: scale(1.04);
+}
+
+.accessory-card {
+  box-shadow: var(--shadow-sm);
+  transition: transform var(--dur) var(--ease-out), box-shadow var(--dur) var(--ease-out) !important;
+}
+
+.accessory-card:hover {
+  transform: translateY(-4px) !important;
+  box-shadow: var(--shadow-lg) !important;
+}
+
+.accessory-card .ph img {
+  transition: transform var(--dur-slow) var(--ease-out) !important;
+}
+
+.accessory-card:hover .ph img {
+  transform: scale(1.05) !important;
 }
