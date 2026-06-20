@@ -346,6 +346,9 @@ img { max-width: 100%; }
     grid-template-columns: 1fr;
     gap: 16px;
   }
+  .spec-tile {
+    grid-column: auto !important;
+  }
 }
 
 @media (max-width: 820px) {

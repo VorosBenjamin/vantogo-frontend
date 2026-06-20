@@ -95,26 +95,6 @@ export function AccessoryDetails({ a, onBack, onBook }) {
 
   return (
     <div className="view container section" style={{ paddingTop: '32px' }}>
-      <div style={{ marginBottom: '24px' }}>
-        <button 
-          onClick={onBack} 
-          style={{ 
-            background: 'none', 
-            border: 'none', 
-            cursor: 'pointer', 
-            color: 'var(--go-600)', 
-            fontWeight: 600, 
-            display: 'inline-flex', 
-            alignItems: 'center', 
-            gap: '6px',
-            fontSize: '14.5px',
-            padding: 0
-          }}
-        >
-          <Icon name="arrow-left" size={16} /> Vissza a kiegészítőkhöz
-        </button>
-      </div>
-
       <div className="product-layout">
         {/* Bal oldali részletes specifikációk */}
         <div>
@@ -128,8 +108,8 @@ export function AccessoryDetails({ a, onBack, onBook }) {
 
           {/* Fő kép */}
           <div className="gallery" style={{ marginBottom: '40px' }}>
-            <div className="main" style={{ height: '400px', borderRadius: 'var(--r-xl)', overflow: 'hidden' }}>
-              <img src={a.photo} alt={a.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+            <div className="main">
+              <img src={a.photo} alt={a.name} />
             </div>
           </div>
 
