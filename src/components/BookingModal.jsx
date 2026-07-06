@@ -1,14 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Icon, Button } from './Primitives';
-import { FLEET, ACCESSORIES } from './data';
-
-// Generate time options in 30-minute intervals
-const TIME_OPTIONS = [];
-for (let h = 0; h < 24; h++) {
-  const hourStr = h.toString().padStart(2, '0');
-  TIME_OPTIONS.push(`${hourStr}:00`);
-  TIME_OPTIONS.push(`${hourStr}:30`);
-}
+import { FLEET, ACCESSORIES, TIME_OPTIONS } from './data';
 
 export function BookingModal({ bookingData, onClose, onConfirm }) {
   const [step, setStep] = useState(1); // 1: Contact details, 2: Document/Contract details
@@ -16,6 +8,7 @@ export function BookingModal({ bookingData, onClose, onConfirm }) {
 
   // Dynamic booking data state which can be edited inside the modal
   const [currentBooking, setCurrentBooking] = useState(bookingData);
+  const [step1Data, setStep1Data] = useState(null);
 
   // Step 1 states
   const [name, setName] = useState('');
@@ -158,18 +151,13 @@ export function BookingModal({ bookingData, onClose, onConfirm }) {
     };
 
     // Store step 1 data
-    localStorage.setItem('vantogo_step1_backup', JSON.stringify(data)); // optional local backup
+    setStep1Data(data);
     setStep(2);
-  };
-
-  const getStep1DataFromBackup = () => {
-    const backup = localStorage.getItem('vantogo_step1_backup');
-    return backup ? JSON.parse(backup) : currentBooking;
   };
 
   const handleStep2Submit = (e) => {
     e.preventDefault();
-    const s1Data = getStep1DataFromBackup();
+    const s1Data = step1Data || currentBooking;
     
     const finalData = {
       ...s1Data,
@@ -187,11 +175,10 @@ export function BookingModal({ bookingData, onClose, onConfirm }) {
       onConfirm(finalData);
     }
     setSuccess(true);
-    localStorage.removeItem('vantogo_step1_backup');
   };
 
   const handleSkipStep2 = () => {
-    const s1Data = getStep1DataFromBackup();
+    const s1Data = step1Data || currentBooking;
     const finalData = {
       ...s1Data,
       hasDocumentsProvided: false
@@ -201,7 +188,6 @@ export function BookingModal({ bookingData, onClose, onConfirm }) {
       onConfirm(finalData);
     }
     setSuccess(true);
-    localStorage.removeItem('vantogo_step1_backup');
   };
 
   if (!bookingData) return null;
@@ -211,7 +197,7 @@ export function BookingModal({ bookingData, onClose, onConfirm }) {
       <div className="modal-content" onClick={(e) => e.stopPropagation()}>
         {step === 1 && !success && (
           <button className="modal-close" onClick={onClose} aria-label="Bezárás">
-            <Icon name="x" size={20} />
+            <Icon name="x" size={24} />
           </button>
         )}
 
@@ -309,22 +295,57 @@ export function BookingModal({ bookingData, onClose, onConfirm }) {
 
                   <div className="field">
                     <label>Átvétel módja</label>
-                    <div className="seg-toggle" style={{ margin: '8px 0 0' }}>
-                      <button
-                        type="button"
-                        className={editDeliveryOption === 'telephely' ? 'active' : ''}
-                        onClick={() => setEditDeliveryOption('telephely')}
+                    {currentBooking.isAccessory ? (
+                      <div 
+                        className="seg-toggle" 
+                        style={{ 
+                          margin: '8px 0 0', 
+                          background: 'var(--paper-2)', 
+                          border: '1px solid var(--line)', 
+                          padding: '4px',
+                          pointerEvents: 'none'
+                        }}
                       >
-                        Telephelyen
-                      </button>
-                      <button
-                        type="button"
-                        className={editDeliveryOption === 'hazhoz' ? 'active' : ''}
-                        onClick={() => setEditDeliveryOption('hazhoz')}
-                      >
-                        Házhozszállítás
-                      </button>
-                    </div>
+                        <button
+                          type="button"
+                          style={{
+                            background: 'var(--card)',
+                            color: 'var(--go-700)',
+                            boxShadow: 'var(--shadow-xs)',
+                            fontWeight: 700,
+                            fontSize: '14px',
+                            flex: 1,
+                            borderRadius: 'var(--r-pill)',
+                            border: 'none',
+                            padding: '9px',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            gap: '6px'
+                          }}
+                        >
+                          <Icon name="map-pin" size={14} style={{ color: 'var(--go-600)' }} />
+                          Csak a telephelyen
+                        </button>
+                      </div>
+                    ) : (
+                      <div className="seg-toggle" style={{ margin: '8px 0 0' }}>
+                        <button
+                          type="button"
+                          className={editDeliveryOption === 'telephely' ? 'active' : ''}
+                          onClick={() => setEditDeliveryOption('telephely')}
+                        >
+                          Telephelyen
+                        </button>
+                        <button
+                          type="button"
+                          className={editDeliveryOption === 'hazhoz' ? 'active' : ''}
+                          onClick={() => setEditDeliveryOption('hazhoz')}
+                        >
+                          Házhozszállítás
+                        </button>
+                      </div>
+                    )}
                   </div>
                 </div>
 

@@ -1,13 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Icon, Button, SpecStat, Badge } from './Primitives';
-
-// Generate time options in 30-minute intervals
-const TIME_OPTIONS = [];
-for (let h = 0; h < 24; h++) {
-  const hourStr = h.toString().padStart(2, '0');
-  TIME_OPTIONS.push(`${hourStr}:00`);
-  TIME_OPTIONS.push(`${hourStr}:30`);
-}
+import { FLEET, TIME_OPTIONS } from './data';
 
 export function VehicleDetails({ v, onBack, onBook }) {
   const [activePhoto, setActivePhoto] = useState(v.photo);

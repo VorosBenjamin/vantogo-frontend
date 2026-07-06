@@ -1,13 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Icon, Button, SpecStat } from './Primitives';
-
-// Generate time options in 30-minute intervals
-const TIME_OPTIONS = [];
-for (let h = 0; h < 24; h++) {
-  const hourStr = h.toString().padStart(2, '0');
-  TIME_OPTIONS.push(`${hourStr}:00`);
-  TIME_OPTIONS.push(`${hourStr}:30`);
-}
+import { ACCESSORIES, TIME_OPTIONS } from './data';
 
 export function AccessoryDetails({ a, onBack, onBook }) {
   const [startDate, setStartDate] = useState('');
@@ -258,6 +251,43 @@ export function AccessoryDetails({ a, onBack, onBook }) {
                   >
                     {TIME_OPTIONS.map(t => <option key={t} value={t}>{t}</option>)}
                   </select>
+                </div>
+              </div>
+
+              {/* Átvétel módja (csak telephelyen) */}
+              <div className="field">
+                <label>Átvétel módja</label>
+                <div 
+                  className="seg-toggle" 
+                  style={{ 
+                    margin: '8px 0 24px', 
+                    background: 'var(--paper-2)', 
+                    border: '1px solid var(--line)', 
+                    padding: '4px',
+                    pointerEvents: 'none'
+                  }}
+                >
+                  <button
+                    type="button"
+                    style={{
+                      background: 'var(--card)',
+                      color: 'var(--go-700)',
+                      boxShadow: 'var(--shadow-xs)',
+                      fontWeight: 700,
+                      fontSize: '14px',
+                      flex: 1,
+                      borderRadius: 'var(--r-pill)',
+                      border: 'none',
+                      padding: '9px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      gap: '6px'
+                    }}
+                  >
+                    <Icon name="map-pin" size={14} style={{ color: 'var(--go-600)' }} />
+                    Csak a telephelyen
+                  </button>
                 </div>
               </div>
             </div>

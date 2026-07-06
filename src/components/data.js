@@ -1,3 +1,10 @@
+export const TIME_OPTIONS = [];
+for (let h = 0; h < 24; h++) {
+  const hourStr = h.toString().padStart(2, '0');
+  TIME_OPTIONS.push(`${hourStr}:00`);
+  TIME_OPTIONS.push(`${hourStr}:30`);
+}
+
 export const FLEET = [
   {
     id: 'vito-9',

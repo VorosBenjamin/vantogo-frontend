@@ -28,7 +28,6 @@ export function VanToGoApp() {
   };
 
   const navigate = (id) => {
-    console.log('Navigating to:', id);
     
     // In Wix environment, we also dispatch an event
     window.dispatchEvent(new CustomEvent('vantogoNavigate', { detail: id }));
@@ -47,14 +46,12 @@ export function VanToGoApp() {
   };
 
   const openVehicle = (vehicle) => {
-    console.log('Opening vehicle:', vehicle);
     setSelectedVehicle(vehicle);
     setView('vehicle-details');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const openAccessory = (accessory) => {
-    console.log('Opening accessory:', accessory);
     setSelectedAccessory(accessory);
     setView('accessory-details');
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -84,7 +81,6 @@ export function VanToGoApp() {
 
   // Called when customer submits the final form inside the Modal
   const handleConfirmBooking = (finalBookingData) => {
-    console.log('Final booking confirmed:', finalBookingData);
     
     // Dispatch custom event for Wix Velo to capture and save to database
     const event = new CustomEvent('vantogoBookingSubmit', {
