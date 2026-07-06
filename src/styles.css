@@ -170,7 +170,7 @@ img { max-width: 100%; }
 .site-footer .wm { font-family: var(--font-display); font-weight:700; font-size: 24px; color:#fff; letter-spacing:-0.03em; }
 .site-footer .wm .bang { color: var(--amber-400); }
 .site-footer h5 { font-size: 13px; text-transform: uppercase; letter-spacing:.12em; color: var(--amber-300); margin: 0 0 16px; }
-.site-footer a { color: var(--fg-ondark-muted); display:block; padding: 5px 0; font-size: 14.5px; }
+.site-footer a { color: var(--fg-ondark-muted); display:block; padding: 5px 0; font-size: 14.5px; cursor: pointer; }
 .site-footer a:hover { color: #fff; }
 .site-footer .muted { color: var(--fg-ondark-muted); font-size: 14px; line-height: 1.6; }
 .footer-bottom { border-top: 1px solid rgba(255,255,255,.12); margin-top: 40px; padding-top: 22px; display:flex; justify-content:space-between; gap:16px; flex-wrap:wrap; color: var(--fg-ondark-muted); font-size: 13px; }
