@@ -19,7 +19,12 @@ export function VanToGoApp() {
   const [selectedVehicle, setSelectedVehicle] = useState(null);
   const [selectedAccessory, setSelectedAccessory] = useState(null);
   const [bookingData, setBookingData] = useState(null); // When not null, opens BookingModal
-  const [searchParams, setSearchParams] = useState({ startDate: '', endDate: '' });
+  const [searchParams, setSearchParams] = useState({ 
+    startDate: '', 
+    endDate: '',
+    pickupTime: '08:00',
+    returnTime: '08:00'
+  });
 
   const scrollToAnchor = (anchorId) => {
     const el = document.getElementById(anchorId);
@@ -66,9 +71,9 @@ export function VanToGoApp() {
       vehicleId: vehicle.id,
       vehicleName: vehicle.name,
       startDate: searchParams.startDate || '',
-      pickupTime: '08:00',
+      pickupTime: searchParams.pickupTime || '08:00',
       endDate: searchParams.endDate || '',
-      returnTime: '08:00',
+      returnTime: searchParams.returnTime || '08:00',
       deliveryOption: 'telephely',
       days: 0,
       totalPrice: 0
@@ -133,8 +138,8 @@ export function VanToGoApp() {
           v={selectedVehicle} 
           onBack={() => navigate('fleet')} 
           onBook={handleVehicleBook} 
-          initialStartDate={searchParams.startDate}
-          initialEndDate={searchParams.endDate}
+          searchParams={searchParams}
+          setSearchParams={setSearchParams}
         />
       )}
 
@@ -143,6 +148,8 @@ export function VanToGoApp() {
           a={selectedAccessory} 
           onBack={() => navigate('accessories')} 
           onBook={handleVehicleBook} 
+          searchParams={searchParams}
+          setSearchParams={setSearchParams}
         />
       )}
       

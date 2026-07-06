@@ -2,20 +2,21 @@ import React, { useState, useEffect } from 'react';
 import { Icon, Button, SpecStat } from './Primitives';
 import { ACCESSORIES, TIME_OPTIONS } from './data';
 
-export function AccessoryDetails({ a, onBack, onBook }) {
-  const [startDate, setStartDate] = useState('');
-  const [pickupTime, setPickupTime] = useState('08:00');
-  const [endDate, setEndDate] = useState('');
-  const [returnTime, setReturnTime] = useState('08:00');
+export function AccessoryDetails({ a, onBack, onBook, searchParams, setSearchParams }) {
   const [days, setDays] = useState(0);
   const [totalPrice, setTotalPrice] = useState(0);
+  const [deliveryOption, setDeliveryOption] = useState('telephely');
+
+  const { startDate, endDate, pickupTime, returnTime } = searchParams;
+
+  const updateSearchParam = (field, value) => {
+    if (setSearchParams) {
+      setSearchParams(prev => ({ ...prev, [field]: value }));
+    }
+  };
 
   // Reset values when accessory changes
   useEffect(() => {
-    setStartDate('');
-    setPickupTime('08:00');
-    setEndDate('');
-    setReturnTime('08:00');
     setDays(0);
     setTotalPrice(0);
   }, [a]);
@@ -211,9 +212,8 @@ export function AccessoryDetails({ a, onBack, onBook }) {
                   <input
                     type="date"
                     className="input"
-                    required
                     value={startDate}
-                    onChange={(e) => setStartDate(e.target.value)}
+                    onChange={e => updateSearchParam('startDate', e.target.value)}
                     min={new Date().toISOString().split('T')[0]}
                   />
                 </div>
@@ -222,7 +222,7 @@ export function AccessoryDetails({ a, onBack, onBook }) {
                   <select
                     className="select"
                     value={pickupTime}
-                    onChange={(e) => setPickupTime(e.target.value)}
+                    onChange={e => updateSearchParam('pickupTime', e.target.value)}
                   >
                     {TIME_OPTIONS.map(t => <option key={t} value={t}>{t}</option>)}
                   </select>
@@ -236,9 +236,8 @@ export function AccessoryDetails({ a, onBack, onBook }) {
                   <input
                     type="date"
                     className="input"
-                    required
                     value={endDate}
-                    onChange={(e) => setEndDate(e.target.value)}
+                    onChange={e => updateSearchParam('endDate', e.target.value)}
                     min={startDate || new Date().toISOString().split('T')[0]}
                   />
                 </div>
@@ -247,7 +246,7 @@ export function AccessoryDetails({ a, onBack, onBook }) {
                   <select
                     className="select"
                     value={returnTime}
-                    onChange={(e) => setReturnTime(e.target.value)}
+                    onChange={e => updateSearchParam('returnTime', e.target.value)}
                   >
                     {TIME_OPTIONS.map(t => <option key={t} value={t}>{t}</option>)}
                   </select>
