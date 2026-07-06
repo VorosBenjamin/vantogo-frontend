@@ -1,16 +1,26 @@
-# React + Vite
+# VanToGo! Frontend Web Component
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Ez a VanToGo! (kisbusz bérlés) weboldalának forráskódja.
+A weboldal egy **React alapú (Vite) Single Page Application (SPA)**, ami egyedi beállításokkal lett konfigurálva úgy, hogy **Web Componentként (Custom Element)** futhasson a Wix platformon belül is.
 
-Currently, two official plugins are available:
+## Technikai Stack
+- React 18
+- Vite
+- react-to-webcomponent (A Wix integrációhoz)
+- Lucide React (Ikonok)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Fejlesztés Helyben
+1. Függőségek telepítése: `npm install`
+2. Fejlesztői szerver indítása: `npm run dev`
+3. Nyisd meg a bongészőben a kiírt localhost címet (pl. `http://localhost:5173`)
 
-## React Compiler
+## Telepítés / Build
+`npm run build`
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Ez legenerálja a `dist/` mappát a Web Component (`vantogo-app`) fájlokkal, amelyeket fel lehet tölteni a GitHub Pages-re vagy CDN-re, majd beágyazni a Wix Editor Custom Element részébe.
 
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Wix Integráció Röviden
+- A kód felépít egy `<vantogo-app>` HTML taget.
+- A navigációt és a foglalás beküldését a böngésző belső `CustomEvent` hívásaival kommunikálja a Wix Velo réteg felé:
+  - `vantogoNavigate`: Oldalváltás jelzése
+  - `vantogoBookingSubmit`: Foglalási űrlap adatai (ezt a Wix menti az adatbázisba)

@@ -58,14 +58,14 @@ export function AccessoryDetails({ a, onBack, onBook }) {
   const handleBookingSubmit = (e) => {
     e.preventDefault();
     if (!startDate || !endDate) {
-      alert('Kérjük, válaszd ki a bérlés kezdetét és végét!');
+      window.dispatchEvent(new CustomEvent('vantogoToast', { detail: 'Kérjük, válaszd ki a bérlés kezdetét és végét!' }));
       return;
     }
 
     const start = new Date(`${startDate}T${pickupTime}`);
     const end = new Date(`${endDate}T${returnTime}`);
     if (end <= start) {
-      alert('A leadás időpontjának az átvétel után kell lennie!');
+      window.dispatchEvent(new CustomEvent('vantogoToast', { detail: 'A leadás időpontjának az átvétel után kell lennie!' }));
       return;
     }
     
@@ -102,7 +102,7 @@ export function AccessoryDetails({ a, onBack, onBook }) {
           {/* Fő kép */}
           <div className="gallery" style={{ marginBottom: '40px' }}>
             <div className="main">
-              <img src={a.photo} alt={a.name} />
+              <img src={a.photo} alt={a.name} loading="lazy" />
             </div>
           </div>
 

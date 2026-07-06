@@ -5,7 +5,7 @@ export function FleetCard({ v, onOpen }) {
   return (
     <article className="vehicle" onClick={() => onOpen && onOpen(v)}>
       <div className="ph">
-        <img src={v.photo} alt={v.name} />
+        <img src={v.photo} alt={v.name} loading="lazy" />
         {v.popular && <span className="badge badge--amber-solid tag"><Icon name="star" size={14} className="ic" />Népszerű</span>}
       </div>
       <div className="body">

@@ -3,40 +3,46 @@ import { Button, Icon } from './Primitives';
 import { FleetCard, FAQList } from './FleetCard';
 import { FLEET, SEGMENTS, FEATURES, FAQS } from './data';
 
-export function HeroBooking({ onSubmit }) {
+export function HeroBooking({ onSubmit, searchParams = {}, setSearchParams }) {
+  const handleChange = (e) => {
+    if (setSearchParams) {
+      setSearchParams({ ...searchParams, [e.target.name]: e.target.value });
+    }
+  };
+
   return (
     <div className="booking float">
       <div className="booking-row">
         <div className="field">
           <label>Jármű</label>
-          <select className="select" defaultValue="">
+          <select className="select" name="vehicleId" value={searchParams.vehicleId || ''} onChange={handleChange}>
             <option value="">Bármelyik kisbusz</option>
-            {FLEET.map(v => <option key={v.id}>{v.name}</option>)}
+            {FLEET.map(v => <option key={v.id} value={v.id}>{v.name}</option>)}
           </select>
         </div>
         <div className="field">
           <label>Átvétel</label>
-          <input className="input" placeholder="2026. 06. 12." />
+          <input type="date" className="input" name="startDate" value={searchParams.startDate || ''} onChange={handleChange} />
         </div>
         <div className="field">
           <label>Visszahozás</label>
-          <input className="input" placeholder="2026. 06. 15." />
+          <input type="date" className="input" name="endDate" value={searchParams.endDate || ''} onChange={handleChange} />
         </div>
         <div className="field">
           <label>Létszám</label>
-          <select className="select" defaultValue="">
+          <select className="select" name="seats" value={searchParams.seats || ''} onChange={handleChange}>
             <option value="">Hány fő?</option>
-            <option>1–8 fő</option>
-            <option>9 fő</option>
+            <option value="1-8">1–8 fő</option>
+            <option value="9">9 fő</option>
           </select>
         </div>
-        <Button variant="accent" icon="search" onClick={onSubmit}>Keresés</Button>
+        <Button variant="accent" icon="search" onClick={onSubmit}>Kiválasztom az autóm</Button>
       </div>
     </div>
   );
 }
 
-export function Home({ navigate, openVehicle, onBook }) {
+export function Home({ navigate, openVehicle, onBook, searchParams, setSearchParams }) {
   return (
     <div className="view">
       {/* HERO */}
@@ -57,7 +63,7 @@ export function Home({ navigate, openVehicle, onBook }) {
               <span className="ti"><Icon name="map-pin" size={18} className="ic" />Házhozszállítás Pesten</span>
             </div>
           </div>
-          <HeroBooking onSubmit={() => navigate && navigate('fleet')} />
+          <HeroBooking onSubmit={() => navigate && navigate('fleet')} searchParams={searchParams} setSearchParams={setSearchParams} />
         </div>
       </section>
 

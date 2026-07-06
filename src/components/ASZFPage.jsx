@@ -5,9 +5,9 @@ const MINTA_SZERZODES_TEXT = `==================================================
                       BÉRLETI SZERZŐDÉS (MINTA)
 ========================================================================
 amely létrejött egyrészről a VanToGo! gépjármű bérbeadói:
-Bérbeadó: Szabó Levente EV. & Somlai Dénes EV.
+Bérbeadó: Somlai Dénes EV.
 Cím: 1108 Budapest, Diósgyőri utca 14.
-Adószám: 12345678-1-42
+Adószám: 91572215-1-42
 
 másrészről mint Bérlő között az alábbi feltételekkel:
 

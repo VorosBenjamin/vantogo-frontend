@@ -19,6 +19,7 @@ export function VanToGoApp() {
   const [selectedVehicle, setSelectedVehicle] = useState(null);
   const [selectedAccessory, setSelectedAccessory] = useState(null);
   const [bookingData, setBookingData] = useState(null); // When not null, opens BookingModal
+  const [searchParams, setSearchParams] = useState({ startDate: '', endDate: '' });
 
   const scrollToAnchor = (anchorId) => {
     const el = document.getElementById(anchorId);
@@ -64,9 +65,9 @@ export function VanToGoApp() {
     setBookingData({
       vehicleId: vehicle.id,
       vehicleName: vehicle.name,
-      startDate: '',
+      startDate: searchParams.startDate || '',
       pickupTime: '08:00',
-      endDate: '',
+      endDate: searchParams.endDate || '',
       returnTime: '08:00',
       deliveryOption: 'telephely',
       days: 0,
@@ -94,7 +95,13 @@ export function VanToGoApp() {
       <Header current={view} navigate={navigate} onBook={handleGlobalBook} />
       
       {view === 'home' && (
-        <Home navigate={navigate} openVehicle={openVehicle} onBook={handleGlobalBook} />
+        <Home 
+          navigate={navigate} 
+          openVehicle={openVehicle} 
+          onBook={handleGlobalBook} 
+          searchParams={searchParams}
+          setSearchParams={setSearchParams}
+        />
       )}
       
       {view === 'fleet' && (
@@ -126,6 +133,8 @@ export function VanToGoApp() {
           v={selectedVehicle} 
           onBack={() => navigate('fleet')} 
           onBook={handleVehicleBook} 
+          initialStartDate={searchParams.startDate}
+          initialEndDate={searchParams.endDate}
         />
       )}
 
@@ -146,9 +155,12 @@ export function VanToGoApp() {
           onConfirm={handleConfirmBooking}
         />
       )}
+      <Toast />
     </div>
   );
 }
+
+import { Toast } from './components/Toast';
 
 // Ensure propTypes are set for react-to-webcomponent compatibility
 import PropTypes from 'prop-types';

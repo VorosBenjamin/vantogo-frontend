@@ -59,14 +59,14 @@ export function VehicleDetails({ v, onBack, onBook }) {
   const handleBookingSubmit = (e) => {
     e.preventDefault();
     if (!startDate || !endDate) {
-      alert('Kérjük, válaszd ki a bérlés kezdetét és végét!');
+      window.dispatchEvent(new CustomEvent('vantogoToast', { detail: 'Kérjük, válaszd ki a bérlés kezdetét és végét!' }));
       return;
     }
 
     const start = new Date(`${startDate}T${pickupTime}`);
     const end = new Date(`${endDate}T${returnTime}`);
     if (end <= start) {
-      alert('A leadás időpontjának az átvétel után kell lennie!');
+      window.dispatchEvent(new CustomEvent('vantogoToast', { detail: 'A leadás időpontjának az átvétel után kell lennie!' }));
       return;
     }
     
@@ -102,7 +102,7 @@ export function VehicleDetails({ v, onBack, onBook }) {
           {/* Galéria */}
           <div className="gallery">
             <div className="main">
-              <img src={activePhoto} alt={v.name} />
+              <img src={activePhoto} alt={v.name} loading="lazy" />
             </div>
             {v.gallery && v.gallery.length > 1 && (
               <div className="thumbs">
@@ -112,7 +112,7 @@ export function VehicleDetails({ v, onBack, onBook }) {
                     className={activePhoto === imgUrl ? 'active' : ''}
                     onClick={() => setActivePhoto(imgUrl)}
                   >
-                    <img src={imgUrl} alt={`${v.name} galéria ${idx + 1}`} />
+                    <img src={imgUrl} alt={`${v.name} galéria ${idx + 1}`} loading="lazy" />
                   </button>
                 ))}
               </div>

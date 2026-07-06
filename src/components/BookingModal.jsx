@@ -100,14 +100,14 @@ export function BookingModal({ bookingData, onClose, onConfirm }) {
   const handleSaveSummaryEdit = (e) => {
     e.preventDefault();
     if (!editStartDate || !editEndDate) {
-      alert('Kérjük, válaszd ki a dátumokat!');
+      window.dispatchEvent(new CustomEvent('vantogoToast', { detail: 'Kérjük, válaszd ki a dátumokat!' }));
       return;
     }
 
     const start = new Date(`${editStartDate}T${editPickupTime}`);
     const end = new Date(`${editEndDate}T${editReturnTime}`);
     if (end <= start) {
-      alert('A leadási időpontnak az átvétel után kell lennie!');
+      window.dispatchEvent(new CustomEvent('vantogoToast', { detail: 'A leadási időpontnak az átvétel után kell lennie!' }));
       return;
     }
 
@@ -136,7 +136,7 @@ export function BookingModal({ bookingData, onClose, onConfirm }) {
   const handleStep1Submit = (e) => {
     e.preventDefault();
     if (!agree) {
-      alert('A foglaláshoz el kell fogadnod az adatkezelési tájékoztatót!');
+      window.dispatchEvent(new CustomEvent('vantogoToast', { detail: 'A foglaláshoz el kell fogadnod az adatkezelési tájékoztatót!' }));
       return;
     }
 

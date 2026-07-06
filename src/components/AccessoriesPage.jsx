@@ -78,6 +78,7 @@ export function AccessoriesPage({ openAccessory }) {
                   <img 
                     src={item.photo} 
                     alt={item.name} 
+                    loading="lazy"
                     style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
                   />
                   <span style={{

@@ -46,7 +46,12 @@ export function Footer({ navigate }) {
           </div>
         </div>
         <div className="footer-bottom">
-          <span>© 2026 VanToGo! — Szabó Levente EV. &amp; Somlai Dénes EV.</span>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+            <span>© 2026 VanToGo! — Szabó Levente EV. &amp; Somlai Dénes EV.</span>
+            <span style={{ fontSize: '11.5px', opacity: 0.65 }}>
+              Szabó Levente EV. (Adószám: 90852291-1-33) | Somlai Dénes EV. (Adószám: 91572215-1-42) | Székhely: 1108 Budapest, Diósgyőri utca 14.
+            </span>
+          </div>
           <span>Megbízható kisbusz, mikrobusz bérlés</span>
         </div>
       </div>

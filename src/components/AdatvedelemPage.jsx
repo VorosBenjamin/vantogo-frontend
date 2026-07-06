@@ -55,7 +55,7 @@ export function AdatvedelemPage({ navigate }) {
               4. Az adatkezelés időtartama
             </h3>
             <p style={{ color: 'var(--fg-muted)', fontSize: '15px', lineHeight: '1.6', margin: 0 }}>
-              Az érdeklődés során megadott adatokat a kapcsolatfelvételtől számított legfeljebb **1 évig** tároljuk, kivéve, ha a bérleti jogviszony létrejön. Létrejött bérleti szerződés esetén a számviteli bizonylatokat és a kapcsolódó szerződéses adatokat a jogszabályi kötelezettségeknek megfelelően **8 évig** vagyunk kötelesek megőrizni (Számviteli törvény 169. §).
+              Az érdeklődés során megadott adatokat a kapcsolatfelvételtől számított legfeljebb <strong>1 évig</strong> tároljuk, kivéve, ha a bérleti jogviszony létrejön. Létrejött bérleti szerződés esetén a számviteli bizonylatokat és a kapcsolódó szerződéses adatokat a jogszabályi kötelezettségeknek megfelelően <strong>8 évig</strong> vagyunk kötelesek megőrizni (Számviteli törvény 169. §).
             </p>
           </section>
 

@@ -26,7 +26,7 @@ export function FAQPage({ navigate }) {
           <a href="mailto:info@vantogo.hu" className="btn btn--accent" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', color: '#fff', textDecoration: 'none' }}>
             <Icon name="mail" size={18} /> info@vantogo.hu
           </a>
-          <Button variant="ghost" className="btn--ondark" icon="phone" onClick={() => alert('Telefon: +36 30 123 4567')}>
+          <Button variant="ghost" className="btn--ondark" icon="phone" onClick={() => window.dispatchEvent(new CustomEvent('vantogoToast', { detail: 'Kérjük, hívd a kapcsolat oldalon lévő telefonszámok egyikét!' }))}>
             Kapcsolatfelvétel
           </Button>
         </div>
