@@ -12,7 +12,9 @@ const AppWithErrorBoundary = () => (
 
 // Register Web Component for Wix
 const WebVanToGo = r2wc(AppWithErrorBoundary, React, ReactDOMClient);
-customElements.define('vantogo-app', WebVanToGo);
+if (!customElements.get('vantogo-app')) {
+  customElements.define('vantogo-app', WebVanToGo);
+}
 
 // Standard React rendering when #root is present (local development and standalone preview)
 const rootEl = document.getElementById('root');

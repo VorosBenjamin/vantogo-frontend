@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { Header } from './components/Header';
 import { Home } from './components/Home';
 import { Footer } from './components/Footer';
@@ -26,6 +26,17 @@ export function VanToGoApp() {
     returnTime: '08:00'
   });
 
+  const rootRef = useRef(null);
+
+  const dispatchWixEvent = (eventName, data) => {
+    if (rootRef.current) {
+      rootRef.current.dispatchEvent(new CustomEvent(eventName, { 
+        detail: data, 
+        bubbles: true, 
+        composed: true 
+      }));
+    }
+  };
   const scrollToAnchor = (anchorId) => {
     const el = document.getElementById(anchorId);
     if (el) {
@@ -36,7 +47,7 @@ export function VanToGoApp() {
   const navigate = (id) => {
     
     // In Wix environment, we also dispatch an event
-    window.dispatchEvent(new CustomEvent('vantogoNavigate', { detail: id }));
+    dispatchWixEvent('vantogoNavigate', id);
 
     setView(id);
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -89,14 +100,11 @@ export function VanToGoApp() {
   const handleConfirmBooking = (finalBookingData) => {
     
     // Dispatch custom event for Wix Velo to capture and save to database
-    const event = new CustomEvent('vantogoBookingSubmit', {
-      detail: finalBookingData
-    });
-    window.dispatchEvent(event);
+    dispatchWixEvent('vantogoBookingSubmit', finalBookingData);
   };
 
   return (
-    <div className="app-scroll" style={{ backgroundColor: 'var(--paper)', minHeight: '100vh' }}>
+    <div ref={rootRef} className="app-scroll" style={{ backgroundColor: 'var(--paper)', minHeight: '100vh' }}>
       <Header current={view} navigate={navigate} onBook={handleGlobalBook} />
       
       {view === 'home' && (
