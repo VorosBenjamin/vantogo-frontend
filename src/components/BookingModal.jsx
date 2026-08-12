@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Icon, Button } from './Primitives';
 import { useCatalog } from './CatalogContext';
+import { getTodayInBudapest, isAtLeast18On } from '../lib/ageValidation';
 
 export function BookingModal({ bookingData, onClose, onConfirm }) {
   const { fleet, accessories, timeOptions } = useCatalog();
@@ -8,6 +9,7 @@ export function BookingModal({ bookingData, onClose, onConfirm }) {
   const [success, setSuccess] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState('');
+  const [step1Error, setStep1Error] = useState('');
   const [companyWebsite, setCompanyWebsite] = useState('');
 
   // Dynamic booking data state which can be edited inside the modal
@@ -26,6 +28,7 @@ export function BookingModal({ bookingData, onClose, onConfirm }) {
   const [licenseNumber, setLicenseNumber] = useState('');
   const [birthPlace, setBirthPlace] = useState('');
   const [birthDate, setBirthDate] = useState('');
+  const [ageError, setAgeError] = useState('');
   const [zip, setZip] = useState('');
   const [city, setCity] = useState('');
   const [address, setAddress] = useState('');
@@ -139,6 +142,7 @@ export function BookingModal({ bookingData, onClose, onConfirm }) {
 
   const handleStep1Submit = (e) => {
     e.preventDefault();
+    setStep1Error('');
     if (!agree) {
       window.dispatchEvent(new CustomEvent('vantogoToast', { detail: 'A foglaláshoz el kell fogadnod az adatkezelési tájékoztatót!' }));
       return;
@@ -152,6 +156,7 @@ export function BookingModal({ bookingData, onClose, onConfirm }) {
       customerPhone: phone,
       customerNote: note,
       companyWebsite,
+      privacyAccepted: agree,
       submittedAt: new Date().toISOString()
     };
 
@@ -167,14 +172,44 @@ export function BookingModal({ bookingData, onClose, onConfirm }) {
       await onConfirm?.(finalData);
       setSuccess(true);
     } catch (error) {
-      setSubmitError(error.message || 'Az ajánlatkérés mentése nem sikerült.');
+      const message = error.message || 'Az ajánlatkérés mentése nem sikerült.';
+      if (error.field === 'birthDate') {
+        setAgeError(message);
+      } else if (['customerName', 'customerEmail', 'customerPhone', 'privacyAccepted', 'booking'].includes(error.field)) {
+        setStep1Error(message);
+        setStep(1);
+      } else {
+        setSubmitError(message);
+      }
     } finally {
       setSubmitting(false);
     }
   };
 
+  const validateVehicleAge = (dateOfBirth = birthDate) => {
+    if (currentBooking.isAccessory) {
+      setAgeError('');
+      return true;
+    }
+
+    if (!dateOfBirth) {
+      setAgeError('Az életkor ellenőrzéséhez add meg a születési idődet.');
+      return false;
+    }
+
+    if (!isAtLeast18On(dateOfBirth, getTodayInBudapest())) {
+      setAgeError('18 év alattiak nem tudnak foglalni.');
+      return false;
+    }
+
+    setAgeError('');
+    return true;
+  };
+
   const handleStep2Submit = async (e) => {
     e.preventDefault();
+    if (!validateVehicleAge()) return;
+
     const s1Data = step1Data || currentBooking;
     
     const finalData = {
@@ -193,9 +228,12 @@ export function BookingModal({ bookingData, onClose, onConfirm }) {
   };
 
   const handleSkipStep2 = async () => {
+    if (!validateVehicleAge()) return;
+
     const s1Data = step1Data || currentBooking;
     const finalData = {
       ...s1Data,
+      birthDate,
       hasDocumentsProvided: false
     };
 
@@ -233,6 +271,13 @@ export function BookingModal({ bookingData, onClose, onConfirm }) {
             <p style={{ color: 'var(--fg-muted)', fontSize: '14.5px', marginBottom: '20px' }}>
               Kérjük, add meg a kapcsolattartási adataidat az ajánlat elkészítéséhez.
             </p>
+
+            {step1Error && (
+              <div role="alert" style={{ background: 'var(--danger-bg)', color: 'var(--danger)', border: '1px solid color-mix(in srgb, var(--danger) 30%, transparent)', borderRadius: '12px', padding: '12px 14px', marginBottom: '16px', fontSize: '14px', lineHeight: 1.45 }}>
+                <strong style={{ display: 'block', marginBottom: '3px' }}>Ezt az adatot ellenőrizd:</strong>
+                {step1Error}
+              </div>
+            )}
 
             {/* Dátum & jármű szerkesztő mód a modalon belül */}
             {isEditingSummary ? (
@@ -526,6 +571,23 @@ export function BookingModal({ bookingData, onClose, onConfirm }) {
         ) : (
           // STEP 2: Document info (Optional for contract prep)
           <div>
+            <Button
+              type="button"
+              variant="ghost"
+              size="sm"
+              icon="arrow-left"
+              onClick={() => {
+                setSubmitError('');
+                setAgeError('');
+                setStep1Error('');
+                setStep(1);
+              }}
+              disabled={submitting}
+              style={{ minHeight: '44px', margin: '-8px 0 12px -8px', paddingInline: '10px' }}
+            >
+              Vissza
+            </Button>
+
             <div style={{ display: 'flex', alignItems: 'center', gap: '10px', background: 'var(--go-50)', border: '1px solid var(--go-100)', borderRadius: 'var(--r-lg)', padding: '14px', marginBottom: '20px' }}>
               <Icon name="check-circle" size={24} style={{ color: 'var(--go-600)', flex: 'none' }} />
               <div>
@@ -591,8 +653,23 @@ export function BookingModal({ bookingData, onClose, onConfirm }) {
                       className="input"
                       required
                       value={birthDate}
-                      onChange={(e) => setBirthDate(e.target.value)}
+                      aria-invalid={Boolean(ageError)}
+                      aria-describedby={ageError ? 'booking-age-error' : undefined}
+                      onChange={(e) => {
+                        const nextBirthDate = e.target.value;
+                        setBirthDate(nextBirthDate);
+                        if (ageError || nextBirthDate) validateVehicleAge(nextBirthDate);
+                      }}
                     />
+                    {ageError && (
+                      <span
+                        id="booking-age-error"
+                        role="alert"
+                        style={{ display: 'block', color: 'var(--danger)', fontSize: '13px', lineHeight: 1.4, marginTop: '6px' }}
+                      >
+                        {ageError}
+                      </span>
+                    )}
                   </div>
                 </div>
 

@@ -1,5 +1,6 @@
 import React from 'react';
 import {
+  ArrowLeft,
   ArrowRight,
   ArrowUp,
   BadgePercent,
@@ -36,6 +37,7 @@ import {
 } from 'lucide-react';
 
 const ICONS = {
+  ArrowLeft,
   ArrowRight,
   ArrowUp,
   BadgePercent,

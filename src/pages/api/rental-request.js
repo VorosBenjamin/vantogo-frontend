@@ -1,4 +1,5 @@
 import { getCatalog, insertRentalRequest } from '../../lib/wixCatalog';
+import { getTodayInBudapest, isAtLeast18On } from '../../lib/ageValidation';
 
 const text = (value, max = 200) => String(value ?? '').trim().slice(0, max);
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -11,6 +12,10 @@ function json(body, status = 200) {
       'Content-Security-Policy': "default-src 'none'; frame-ancestors 'none'",
     },
   });
+}
+
+function validationError(field, error) {
+  return json({ error, field, code: 'VALIDATION_ERROR' }, 422);
 }
 
 function calculateDays(startAt, endAt) {
@@ -37,20 +42,32 @@ export const POST = async ({ request }) => {
   const customerEmail = text(input.customerEmail, 180).toLowerCase();
   const customerPhone = text(input.customerPhone, 60);
   const itemId = text(input.vehicleId, 80);
+  const isAccessory = Boolean(input.isAccessory);
+  const birthDate = text(input.birthDate, 10);
   const privacyAccepted = input.privacyAccepted === true;
   const startAt = new Date(`${text(input.startDate, 10)}T${text(input.pickupTime, 5)}`);
   const endAt = new Date(`${text(input.endDate, 10)}T${text(input.returnTime, 5)}`);
   const days = calculateDays(startAt, endAt);
 
-  if (!customerName || !emailPattern.test(customerEmail) || !customerPhone || !itemId || days < 1 || !privacyAccepted) {
-    return json({ error: 'Ellenőrizd a kapcsolattartási és foglalási adatokat.' }, 422);
+  if (!customerName) return validationError('customerName', 'Add meg a teljes nevedet.');
+  if (!emailPattern.test(customerEmail)) return validationError('customerEmail', 'Adj meg egy érvényes e-mail-címet.');
+  if (!customerPhone) return validationError('customerPhone', 'Add meg a telefonszámodat.');
+  if (!itemId) return validationError('booking', 'Válassz ki egy járművet vagy kiegészítőt.');
+  if (days < 1) return validationError('booking', 'Ellenőrizd az átvétel és a leadás dátumát: a leadásnak később kell lennie.');
+  if (!privacyAccepted) return validationError('privacyAccepted', 'Az ajánlatkéréshez fogadd el az adatkezelési tájékoztatót.');
+
+  if (!isAccessory && !birthDate) {
+    return validationError('birthDate', 'Az életkor ellenőrzéséhez add meg a születési idődet.');
+  }
+
+  if (!isAccessory && !isAtLeast18On(birthDate, getTodayInBudapest())) {
+    return validationError('birthDate', '18 év alattiak nem tudnak foglalni.');
   }
 
   try {
     const catalog = await getCatalog();
-    const isAccessory = Boolean(input.isAccessory);
     const selected = (isAccessory ? catalog.accessories : catalog.fleet).find((item) => item.id === itemId);
-    if (!selected) return json({ error: 'A kiválasztott tétel nem található.' }, 422);
+    if (!selected) return validationError('booking', 'A kiválasztott jármű vagy kiegészítő nem található. Válassz másikat.');
 
     let dailyPrice = Number.parseInt(String(selected.price).replace(/\D/g, ''), 10);
     if (isAccessory && selected.id === 'thule-jetbag-3000') {
@@ -79,7 +96,7 @@ export const POST = async ({ request }) => {
       idCardNumber: text(input.idCardNumber, 80),
       licenseNumber: text(input.licenseNumber, 80),
       birthPlace: text(input.birthPlace, 120),
-      birthDate: text(input.birthDate, 10),
+      birthDate,
       customerZip: text(input.customerZip, 12),
       city: text(input.customerCity, 120),
       address: text(input.customerAddress, 240),

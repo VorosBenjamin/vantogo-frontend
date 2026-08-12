@@ -93,6 +93,7 @@ function VanToGoShell({ initialView = 'home', selectedId = '' }) {
     if (!response.ok) {
       const error = new Error(result.error || 'Az ajánlatkérés mentése nem sikerült.');
       error.code = result.code;
+      error.field = result.field;
       throw error;
     }
     return result;
