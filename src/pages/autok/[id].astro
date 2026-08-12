@@ -1,0 +1,12 @@
+---
+import SitePage from '../../components/SitePage.astro';
+const { id = '' } = Astro.params;
+---
+
+<SitePage
+  view="vehicle-details"
+  selectedId={id}
+  title="Kisbusz részletek és ajánlatkérés | VanToGo!"
+  description="Kisbusz felszereltség, napi díj és online ajánlatkérés a VanToGo oldalán."
+  canonicalPath={`/autok/${id}/`}
+/>

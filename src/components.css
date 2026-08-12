@@ -1,0 +1,126 @@
+/* ============================================================
+   VanToGo! — Component styles (buttons, badges, inputs, cards…)
+   Depends on colors_and_type.css tokens. Used by preview cards
+   and the website UI kit.
+   ============================================================ */
+
+/* ---------- Buttons ---------- */
+.btn {
+  --btn-bg: var(--go-600);
+  --btn-fg: #fff;
+  display: inline-flex; align-items: center; justify-content: center; gap: 9px;
+  font-family: var(--font-sans);
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 1;
+  padding: 14px 22px;
+  border-radius: var(--r-pill);
+  border: none;
+  background: var(--btn-bg);
+  color: var(--btn-fg);
+  cursor: pointer;
+  text-decoration: none;
+  transition: background var(--dur) var(--ease-out),
+              transform var(--dur-fast) var(--ease-out),
+              box-shadow var(--dur) var(--ease-out);
+  white-space: nowrap;
+}
+.btn:hover { background: var(--go-700); color: #fff; }
+.btn:active { transform: scale(0.975); }
+.btn .ic { width: 19px; height: 19px; }
+
+.btn--primary { --btn-bg: var(--go-600); box-shadow: var(--shadow-brand); }
+.btn--primary:hover { box-shadow: 0 10px 26px rgba(22,117,63,.32); }
+
+.btn--accent { --btn-bg: var(--amber-400); --btn-fg: var(--go-900); box-shadow: var(--shadow-amber); }
+.btn--accent:hover { background: var(--amber-500); color: var(--go-900); }
+
+.btn--ghost {
+  background: transparent; color: var(--go-700);
+  box-shadow: inset 0 0 0 1.5px var(--go-200);
+}
+.btn--ghost:hover { background: var(--go-50); color: var(--go-700); }
+
+.btn--dark { background: var(--go-800); color: var(--fg-ondark); }
+.btn--dark:hover { background: var(--go-900); color: var(--fg-ondark); }
+
+.btn--ondark { background: rgba(255,255,255,.10); color: #fff; box-shadow: inset 0 0 0 1.5px rgba(255,255,255,.42); }
+.btn--ondark:hover { background: rgba(255,255,255,.18); color: #fff; }
+
+.btn--lg { font-size: 17px; padding: 17px 28px; }
+.btn--sm { font-size: 14px; padding: 10px 16px; }
+.btn--block { display: flex; width: 100%; }
+
+/* ---------- Badges & spec chips ---------- */
+.badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 12.5px; font-weight: 700; line-height: 1;
+  padding: 6px 11px; border-radius: var(--r-pill);
+  background: var(--go-50); color: var(--go-800);
+  border: 1px solid var(--go-100);
+}
+.badge--amber { background: var(--amber-50); color: var(--amber-600); border-color: var(--amber-100); }
+.badge--solid { background: var(--go-600); color: #fff; border-color: transparent; }
+.badge--amber-solid { background: var(--amber-400); color: var(--go-900); border-color: transparent; }
+.badge .ic { width: 14px; height: 14px; }
+
+.spec {
+  display: inline-flex; align-items: center; gap: 9px;
+  font-size: 14px; font-weight: 600; color: var(--ink-700);
+  background: var(--card); border: 1px solid var(--line);
+  border-radius: var(--r-pill); padding: 6px 15px 6px 6px;
+  box-shadow: var(--shadow-xs);
+  font-variant-numeric: tabular-nums;
+}
+.spec > .spec-ic {
+  width: 27px; height: 27px; border-radius: 50%; flex: none;
+  background: var(--go-50); color: var(--go-600);
+  display: inline-flex; align-items: center; justify-content: center;
+}
+.spec > .spec-ic svg, .spec > .spec-ic .ic { width: 15px; height: 15px; }
+
+/* Spec stat — larger, two-line, for product detail (max scannability) */
+.spec-stat { display: flex; align-items: center; gap: 12px; }
+.spec-stat .si {
+  width: 44px; height: 44px; border-radius: var(--r-md); flex: none;
+  background: var(--go-50); color: var(--go-600);
+  display: flex; align-items: center; justify-content: center;
+}
+.spec-stat .si svg { width: 22px; height: 22px; }
+.spec-stat .k { font-size: 11.5px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; color: var(--fg-subtle); line-height: 1; margin-bottom: 4px; }
+.spec-stat .val { font-size: 16px; font-weight: 700; color: var(--ink-900); line-height: 1; font-variant-numeric: tabular-nums; }
+
+/* Numeral utility — tabular figures in the display/sans face (no code-style mono) */
+.num { font-variant-numeric: tabular-nums; letter-spacing: -0.01em; }
+
+/* ---------- Inputs ---------- */
+.field { display: flex; flex-direction: column; gap: 7px; }
+.field > label { font-size: 13.5px; font-weight: 700; color: var(--ink-700); }
+.input, .select, .textarea {
+  font-family: var(--font-sans); font-size: 16px; color: var(--ink-900);
+  background: var(--card);
+  border: 1.5px solid var(--line-2);
+  border-radius: var(--r-md);
+  padding: 13px 15px;
+  transition: border-color var(--dur) var(--ease-out), box-shadow var(--dur) var(--ease-out);
+  width: 100%;
+}
+.input::placeholder, .textarea::placeholder { color: var(--ink-300); }
+.input:focus, .select:focus, .textarea:focus {
+  outline: none; border-color: var(--go-500);
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--go-500) 22%, transparent);
+}
+.textarea { resize: vertical; min-height: 84px; line-height: 1.5; }
+
+/* ---------- Card ---------- */
+.card-surface {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow-sm);
+}
+
+/* ---------- Reduced motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+  * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}
