@@ -88,7 +88,7 @@ export function Home({ navigate, openVehicle, onBook, searchParams, setSearchPar
       {/* FLEET PREVIEW */}
       <section className="section bg-sand" id="fleet-anchor">
         <div className="container">
-          <div className="cat-bar">
+          <div className="cat-bar home-fleet-head">
             <div className="section-head" style={{ marginBottom: 0 }}>
               <h2>Válaszd ki a kisbuszodat</h2>
             </div>

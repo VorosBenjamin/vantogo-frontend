@@ -495,8 +495,9 @@ export function BookingModal({ bookingData, onClose, onConfirm }) {
                     onChange={(e) => setCompanyWebsite(e.target.value)}
                   />
                 </div>
+                <p className="required-fields-note"><span aria-hidden="true">*</span> A csillaggal jelölt mezők kitöltése kötelező.</p>
                 <div className="field">
-                  <label>Teljes név</label>
+                  <label>Teljes név <span className="required-mark" aria-hidden="true">*</span><span className="sr-only"> (kötelező)</span></label>
                   <input
                     type="text"
                     className="input"
@@ -508,7 +509,7 @@ export function BookingModal({ bookingData, onClose, onConfirm }) {
                 </div>
 
                 <div className="field">
-                  <label>E-mail cím</label>
+                  <label>E-mail cím <span className="required-mark" aria-hidden="true">*</span><span className="sr-only"> (kötelező)</span></label>
                   <input
                     type="email"
                     className="input"
@@ -520,7 +521,7 @@ export function BookingModal({ bookingData, onClose, onConfirm }) {
                 </div>
 
                 <div className="field">
-                  <label>Telefonszám</label>
+                  <label>Telefonszám <span className="required-mark" aria-hidden="true">*</span><span className="sr-only"> (kötelező)</span></label>
                   <input
                     type="tel"
                     className="input"

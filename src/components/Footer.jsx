@@ -1,5 +1,5 @@
 import React from 'react';
-import { Mark } from './Primitives';
+import { Logo } from './Primitives';
 
 export function Footer({ navigate }) {
   return (
@@ -7,10 +7,7 @@ export function Footer({ navigate }) {
       <div className="container">
         <div className="footer-grid">
           <div>
-            <div className="brand-lockup" style={{ marginBottom: 14 }}>
-              <Mark height={34} body="#FAF6EE" glass="#0A2A1D" wheel="#0A2A1D" />
-              <span className="wm">VanToGo<span className="bang">!</span></span>
-            </div>
+            <div className="footer-brand"><Logo markHeight={34} fontSize={24} dark bg="#0A2A1D" /></div>
             <p className="muted" style={{ maxWidth: '32ch' }}>
               Megbízható kisbusz &amp; mikrobusz bérlés Budapesten. 8 és 9 személyes járművek
               családoknak, cégeknek és kalandvágyóknak.
