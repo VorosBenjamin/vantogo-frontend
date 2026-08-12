@@ -1,0 +1,126 @@
+{
+  "dataCollectionId": "Vehicles",
+  "dataItems": [
+    {
+      "data": {
+        "name": "Mercedes-Benz Vito",
+        "slug": "vito-9",
+        "seats": "9 személyes",
+        "trans": "Manuális",
+        "drive": "fwd",
+        "driveName": "Elsőkerék-hajtás",
+        "driveShort": "FWD",
+        "km": "250 km/nap",
+        "luggage": "1 300 L",
+        "dailyPrice": 33000,
+        "photo": "/assets/fleet/crop-vito-black.png",
+        "popular": true,
+        "tagline": "9 személyes, takarékos és kényelmes utazó kisbusz.",
+        "fuel": "Dízel",
+        "consumption": "7.5 L / 100 km",
+        "deposit": "200 000 Ft",
+        "aircon": "Manuális klíma",
+        "engine": "1598 ccm, 114 LE",
+        "extrasJson": "[\"Esőszenzor\",\"Tempomat\",\"Guminyomás szonda\",\"ISOFIX rögzítési pontok\",\"Központi zár\",\"Elektromos ablakok\"]",
+        "galleryJson": "[\"/assets/fleet/crop-vito-black.png\"]"
+      }
+    },
+    {
+      "data": {
+        "name": "Opel Vivaro",
+        "slug": "vivaro-9",
+        "seats": "9 személyes",
+        "trans": "Manuális",
+        "drive": "fwd",
+        "driveName": "Elsőkerék-hajtás",
+        "driveShort": "FWD",
+        "km": "250 km/nap",
+        "luggage": "1 200 L",
+        "dailyPrice": 30000,
+        "photo": "/assets/fleet/crop-opel-vivaro.png",
+        "popular": false,
+        "tagline": "Kedvező árú, gazdaságos kisbusz a hosszabb utakra.",
+        "fuel": "Dízel",
+        "consumption": "6.9 L / 100 km",
+        "deposit": "200 000 Ft",
+        "aircon": "Többzónás automata klíma (hátsó mennyezeti befúvókkal)",
+        "engine": "1.6 CDTI, 125 LE",
+        "extrasJson": "[\"Ülésfűtés\",\"Dupla tolóajtó\",\"Parkolóradar elől-hátul\",\"Tempomat\",\"Vonóhorog\",\"Poroltó\"]",
+        "galleryJson": "[\"/assets/fleet/crop-opel-vivaro.png\"]"
+      }
+    },
+    {
+      "data": {
+        "name": "Mercedes-Benz Viano 115 CDI L",
+        "slug": "viano-8",
+        "seats": "8 személyes",
+        "trans": "Automata",
+        "drive": "rwd",
+        "driveName": "Hátsókerék-hajtás",
+        "driveShort": "RWD",
+        "km": "250 km/nap",
+        "luggage": "1 300 L",
+        "dailyPrice": 26000,
+        "photo": "/assets/fleet/crop-viano-silver.png",
+        "popular": false,
+        "tagline": "Automata váltó és prémium kényelem a kényelmes utazáshoz.",
+        "fuel": "Dízel",
+        "consumption": "8.5 L / 100 km",
+        "deposit": "200 000 Ft",
+        "aircon": "Többzónás automata klíma",
+        "engine": "2148 ccm, 150 LE",
+        "extrasJson": "[\"Bőr belső\",\"Automata váltó\",\"Tempomat\",\"Parkolóradar elől-hátul\",\"Dönthető karfás ülések\",\"Dupla tolóajtó\",\"Vonóhorog\"]",
+        "galleryJson": "[\"/assets/fleet/crop-viano-silver.png\"]"
+      }
+    },
+    {
+      "data": {
+        "name": "Mercedes-Benz Vito 115 CDI L",
+        "slug": "vito-8",
+        "seats": "8 személyes",
+        "trans": "Manuális",
+        "drive": "rwd",
+        "driveName": "Hátsókerék-hajtás",
+        "driveShort": "RWD",
+        "km": "250 km/nap",
+        "luggage": "1 300 L",
+        "dailyPrice": 24000,
+        "photo": "/assets/fleet/crop-vito-silver.png",
+        "popular": false,
+        "tagline": "Hosszított kivitel, kivehető ülésekkel — pakolj, amennyit csak kell.",
+        "fuel": "Dízel",
+        "consumption": "7.9 L / 100 km",
+        "deposit": "200 000 Ft",
+        "aircon": "Többzónás automata klíma (hátsó mennyezeti befúvókkal)",
+        "engine": "2148 ccm, 150 LE",
+        "extrasJson": "[\"Kivehető ülések\",\"Parkolóradar elől-hátul\",\"Tempomat\",\"Vonóhorog\",\"CD rádió\",\"Multikormány\"]",
+        "galleryJson": "[\"/assets/fleet/crop-vito-silver.png\"]"
+      }
+    },
+    {
+      "data": {
+        "name": "Mercedes-Benz Vito Extra Long 115 CDI",
+        "slug": "vito-9-extralong",
+        "seats": "9 személyes",
+        "trans": "Manuális",
+        "drive": "rwd",
+        "driveName": "Hátsókerék-hajtás",
+        "driveShort": "RWD",
+        "km": "250 km/nap",
+        "luggage": "1 400 L",
+        "dailyPrice": 24000,
+        "photo": "https://static.wixstatic.com/media/f1c7ce_05839d37363f4015a144506f58cbcd7a~mv2.webp",
+        "popular": false,
+        "tagline": "Extra hosszú kivitel, dönthető ülések és hatalmas csomagtér.",
+        "fuel": "Dízel",
+        "consumption": "8.0 L / 100 km",
+        "deposit": "200 000 Ft",
+        "aircon": "Többzónás automata klíma",
+        "engine": "2148 ccm, 150 LE",
+        "extrasJson": "[\"Extra hosszú kivitel\",\"Dönthető karfás ülések pohártartóval\",\"Központi zár\",\"Tempomat\",\"Vonóhorog\",\"Multikormány\"]",
+        "galleryJson": "[\"https://static.wixstatic.com/media/f1c7ce_05839d37363f4015a144506f58cbcd7a~mv2.webp\"]"
+      }
+    }
+  ],
+  "returnEntity": true
+}

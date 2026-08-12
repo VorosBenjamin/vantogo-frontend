@@ -26,17 +26,19 @@ extensionöket, és a Wix kezeli az auth/hosting integrációt.
 4. A teljes React ikonkönyvtár importja 1 MB feletti kliens chunkot okozott. Az
    ikonok explicit importjával az alkalmazás chunkja körülbelül 105 kB-ra csökkent.
 
-## Jelenlegi release-blokkoló
+## Függőségi biztonsági korlát
 
-A 2026-08-12-én futtatott production `npm audit` 4 ismert problémát jelzett
-(1 low, 1 moderate, 2 high) az Astro 5 / Node adapter függőségi láncában. A
-felajánlott javítás Astro 7-re frissítene, miközben a Wix Headless linkelő
-jelenleg kifejezetten Astro 5-öt támogat és Astro 6-ot sem fogad el.
+A 2026-08-12-én, a Wix-managed csomagok telepítése után futtatott
+`npm audit --omit=dev` 3 production érintettséget jelzett (1 low, 2 high) az
+Astro 5, esbuild és sharp függőségi láncában. A felajánlott javítás Astro 7-re
+frissítene, miközben a Wix Headless linkelő jelenleg kifejezetten Astro 5-öt
+támogat és Astro 6-ot sem fogad el.
 
-Ez platformverzió-ütközés: a projekt lokálisan elkészült és buildel, de éles
-release előtt ellenőrizni kell, hogy a Wix kiadott-e Astro 5 backportot vagy
-engedélyezte-e a javított új Astro főverziót. `npm audit fix --force` futtatása
-nem elfogadható, mert eltörné a Wix-kompatibilitást.
+Ez platformverzió-ütközés. A projekt nem használ `define:vars`, server island,
+View Transition vagy felhasználó által vezérelt képtranszformáció funkciót,
+amelyekhez a jelzések többsége kapcsolódik, de a maradék kockázatot minden
+kiadásnál újra kell auditálni. `npm audit fix --force` nem futtatható, mert
+Astro 7-re váltana és eltörné a Wix-managed kompatibilitást.
 
 ## Backend- és adatkockázatok
 

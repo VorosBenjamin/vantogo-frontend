@@ -1,0 +1,149 @@
+{
+  "collection": {
+    "id": "RentalRequests",
+    "displayName": "Rental Requests",
+    "fields": [
+      {
+        "key": "status",
+        "displayName": "Status",
+        "type": "TEXT"
+      },
+      {
+        "key": "itemId",
+        "displayName": "Item ID",
+        "type": "TEXT"
+      },
+      {
+        "key": "itemName",
+        "displayName": "Item name",
+        "type": "TEXT"
+      },
+      {
+        "key": "itemType",
+        "displayName": "Item type",
+        "type": "TEXT"
+      },
+      {
+        "key": "startAt",
+        "displayName": "Start",
+        "type": "DATETIME"
+      },
+      {
+        "key": "endAt",
+        "displayName": "End",
+        "type": "DATETIME"
+      },
+      {
+        "key": "submittedAt",
+        "displayName": "Submitted",
+        "type": "DATETIME"
+      },
+      {
+        "key": "pickupTime",
+        "displayName": "Pickup time",
+        "type": "TEXT"
+      },
+      {
+        "key": "returnTime",
+        "displayName": "Return time",
+        "type": "TEXT"
+      },
+      {
+        "key": "deliveryOption",
+        "displayName": "Delivery option",
+        "type": "TEXT"
+      },
+      {
+        "key": "days",
+        "displayName": "Days",
+        "type": "NUMBER"
+      },
+      {
+        "key": "dailyPrice",
+        "displayName": "Daily price",
+        "type": "NUMBER"
+      },
+      {
+        "key": "totalPrice",
+        "displayName": "Total price",
+        "type": "NUMBER"
+      },
+      {
+        "key": "customerName",
+        "displayName": "Customer name",
+        "type": "TEXT"
+      },
+      {
+        "key": "email",
+        "displayName": "Email",
+        "type": "TEXT"
+      },
+      {
+        "key": "phone",
+        "displayName": "Phone",
+        "type": "TEXT"
+      },
+      {
+        "key": "note",
+        "displayName": "Note",
+        "type": "TEXT"
+      },
+      {
+        "key": "idCardNumber",
+        "displayName": "ID card number",
+        "type": "TEXT"
+      },
+      {
+        "key": "licenseNumber",
+        "displayName": "License number",
+        "type": "TEXT"
+      },
+      {
+        "key": "birthPlace",
+        "displayName": "Birth place",
+        "type": "TEXT"
+      },
+      {
+        "key": "birthDate",
+        "displayName": "Birth date",
+        "type": "TEXT"
+      },
+      {
+        "key": "customerZip",
+        "displayName": "ZIP code",
+        "type": "TEXT"
+      },
+      {
+        "key": "city",
+        "displayName": "City",
+        "type": "TEXT"
+      },
+      {
+        "key": "address",
+        "displayName": "Address",
+        "type": "TEXT"
+      },
+      {
+        "key": "hasDocumentsProvided",
+        "displayName": "Documents provided",
+        "type": "BOOLEAN"
+      },
+      {
+        "key": "privacyAccepted",
+        "displayName": "Privacy accepted",
+        "type": "BOOLEAN"
+      },
+      {
+        "key": "source",
+        "displayName": "Source",
+        "type": "TEXT"
+      }
+    ],
+    "permissions": {
+      "insert": "ADMIN",
+      "update": "ADMIN",
+      "remove": "ADMIN",
+      "read": "ADMIN"
+    }
+  }
+}

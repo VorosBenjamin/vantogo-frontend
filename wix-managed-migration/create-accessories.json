@@ -1,0 +1,66 @@
+{
+  "collection": {
+    "id": "Accessories",
+    "displayName": "Accessories",
+    "fields": [
+      {
+        "key": "name",
+        "displayName": "Name",
+        "type": "TEXT",
+        "required": true
+      },
+      {
+        "key": "slug",
+        "displayName": "Slug",
+        "type": "TEXT",
+        "required": true
+      },
+      {
+        "key": "type",
+        "displayName": "Type",
+        "type": "TEXT"
+      },
+      {
+        "key": "dailyPrice",
+        "displayName": "Daily price",
+        "type": "NUMBER"
+      },
+      {
+        "key": "deposit",
+        "displayName": "Deposit",
+        "type": "TEXT"
+      },
+      {
+        "key": "photo",
+        "displayName": "Photo URL",
+        "type": "TEXT"
+      },
+      {
+        "key": "tagline",
+        "displayName": "Tagline",
+        "type": "TEXT"
+      },
+      {
+        "key": "specsJson",
+        "displayName": "Specifications JSON",
+        "type": "TEXT"
+      },
+      {
+        "key": "pricesJson",
+        "displayName": "Prices JSON",
+        "type": "TEXT"
+      },
+      {
+        "key": "extrasJson",
+        "displayName": "Extras JSON",
+        "type": "TEXT"
+      }
+    ],
+    "permissions": {
+      "insert": "ADMIN",
+      "update": "ADMIN",
+      "remove": "ADMIN",
+      "read": "ANYONE"
+    }
+  }
+}

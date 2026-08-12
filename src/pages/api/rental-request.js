@@ -37,11 +37,12 @@ export const POST = async ({ request }) => {
   const customerEmail = text(input.customerEmail, 180).toLowerCase();
   const customerPhone = text(input.customerPhone, 60);
   const itemId = text(input.vehicleId, 80);
+  const privacyAccepted = input.privacyAccepted === true;
   const startAt = new Date(`${text(input.startDate, 10)}T${text(input.pickupTime, 5)}`);
   const endAt = new Date(`${text(input.endDate, 10)}T${text(input.returnTime, 5)}`);
   const days = calculateDays(startAt, endAt);
 
-  if (!customerName || !emailPattern.test(customerEmail) || !customerPhone || !itemId || days < 1) {
+  if (!customerName || !emailPattern.test(customerEmail) || !customerPhone || !itemId || days < 1 || !privacyAccepted) {
     return json({ error: 'Ellenőrizd a kapcsolattartási és foglalási adatokat.' }, 422);
   }
 
@@ -83,7 +84,7 @@ export const POST = async ({ request }) => {
       city: text(input.customerCity, 120),
       address: text(input.customerAddress, 240),
       hasDocumentsProvided: Boolean(input.hasDocumentsProvided),
-      privacyAccepted: true,
+      privacyAccepted,
       submittedAt: new Date(),
       source: 'vantogo-headless',
     });

@@ -24,26 +24,25 @@ npm run dev
 A helyi katalógus Wix-kapcsolat nélkül is megjelenik. A foglalási végpont ilyenkor
 szándékosan `503 WIX_NOT_CONNECTED` választ ad, tehát nem jelez hamis sikert.
 
-## Összekapcsolás Wix-managed Headless projekttel
+## Wix-managed Headless projekt
 
-Az alábbi parancs külső művelet: új Wix business/site projektet hoz létre a
-bejelentkezett Wix-fiókban, majd a helyi Astro projektet hozzákapcsolja.
+Az oldal a `VanToGo` Wix-managed Headless projekthez kapcsolódik. A Wix CLI
+kezeli az automatikus hitelesítést, a buildet és a Wix hosting kiadását.
 
 ```bash
-npm create @wix/new -- headless link --business-name "VanToGo"
+npm run dev
+npm run build
+npm run release
 ```
 
-A Wix linkelő a helyi Node adaptert Wix hosting adapterre cseréli, hozzáadja az
-`@wix/astro` integrációt, létrehozza a `wix.config.json` fájlt és átírja a
-projektparancsokat. Ezt követően:
+Az új Wix CMS környezet a következő kollekciókat használja:
 
-1. Hozd létre a `docs/CMS_SETUP.md` szerinti három CMS-kollekciót.
-2. Töltsd fel a Vehicles és Accessories tartalmát.
-3. Állítsd be a Wix Secrets/Environment Variables felületén:
-   `WIX_CMS_ENABLED=true`.
-4. Futtasd a Wix által létrehozott `dev`, majd `preview` parancsot.
-5. Valódi teszt-ajánlatkéréssel ellenőrizd a `RentalRequests` mentést.
-6. Csak ezután futtasd a `release` parancsot.
+- `Vehicles`
+- `Accessories`
+- `RentalRequests`
+
+A reprodukálható CMS-migráció fájljai a `scripts/` és
+`wix-managed-migration/` mappákban találhatók.
 
 ## Fontos fájlok
 
@@ -57,8 +56,6 @@ projektparancsokat. Ezt követően:
 
 ## Jelenlegi státusz
 
-A projekt helyileg buildelhető és a Wix-managed Headless Astro 5 linkelési
-folyamatára készen áll. Még nincs Wix-fiókbeli projekthez kapcsolva, ezért nincs
-`wix.config.json`, élő CMS-adat vagy publikált URL. Az aktuális Astro 5
-biztonsági audit release-blokkolóját lásd a `docs/WIX_HEADLESS_ARCHITECTURE.md`
-fájlban; ezt éles publikálás előtt fel kell oldani.
+A projekt Wix-managed Headlesshez kapcsolódik. A katalógusadatok és a privát
+ajánlatkérés-kollekció az új Wix projektben vannak; az éles URL-t a sikeres
+`npm run release` parancs adja vissza.

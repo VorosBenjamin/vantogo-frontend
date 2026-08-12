@@ -6,9 +6,6 @@ const collections = {
   bookings: import.meta.env.WIX_BOOKING_COLLECTION || 'RentalRequests',
 };
 
-const wixClientId = import.meta.env.WIX_CLIENT_ID || '';
-let selfManagedClient;
-
 const parseJson = (value, fallback) => {
   if (value == null || value === '') return fallback;
   if (typeof value !== 'string') return value;
@@ -53,30 +50,9 @@ export function wixCmsEnabled() {
 }
 
 async function queryCollection(collectionId) {
-  if (wixClientId) {
-    const client = await getSelfManagedClient();
-    const result = await client.items.query(collectionId).limit(100).find();
-    return result.items ?? [];
-  }
-
   const { items } = await import('@wix/data');
   const result = await items.query(collectionId).limit(100).find();
   return result.items ?? [];
-}
-
-async function getSelfManagedClient() {
-  if (selfManagedClient) return selfManagedClient;
-
-  const [{ createClient, OAuthStrategy }, { items }] = await Promise.all([
-    import('@wix/sdk'),
-    import('@wix/data'),
-  ]);
-
-  selfManagedClient = createClient({
-    auth: OAuthStrategy({ clientId: wixClientId }),
-    modules: { items },
-  });
-  return selfManagedClient;
 }
 
 export async function getCatalog() {
@@ -101,11 +77,6 @@ export async function insertRentalRequest(payload) {
     const error = new Error('A Wix CMS kapcsolat még nincs aktiválva.');
     error.code = 'WIX_NOT_CONNECTED';
     throw error;
-  }
-
-  if (wixClientId) {
-    const client = await getSelfManagedClient();
-    return client.items.insert(collections.bookings, payload);
   }
 
   const [{ items }, { auth }] = await Promise.all([

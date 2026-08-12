@@ -1,0 +1,48 @@
+{
+  "dataCollectionId": "Accessories",
+  "dataItems": [
+    {
+      "data": {
+        "name": "Thule Jetbag 3000 Tetőbox",
+        "slug": "thule-jetbag-3000",
+        "type": "Tetőbox",
+        "dailyPrice": 2500,
+        "deposit": "20 000 Ft (Autóval bérlés esetén: 0 Ft)",
+        "photo": "/assets/accessories/jetbag.png",
+        "tagline": "225x39x30 cm méretű, tágas tetőbox extra csomagok szállításához.",
+        "specsJson": "{\"méret\":\"225 x 39 x 30 cm\",\"kapacitás\":\"kb. 320 Liter\",\"nyitás\":\"Oldalsó nyitás\",\"rögzítés\":\"Tetőcsomagtartó rúdra\"}",
+        "pricesJson": "[{\"days\":\"1-3 nap\",\"price\":\"2 500 Ft/nap\"},{\"days\":\"4-7 nap\",\"price\":\"2 000 Ft/nap\"},{\"days\":\"8-30 nap\",\"price\":\"1 500 Ft/nap\"},{\"days\":\"30+ nap\",\"price\":\"Egyedi ár\"}]",
+        "extrasJson": "[\"Biztonsági zár\",\"Vízálló kivitel\",\"Tetőcsomagtartó rúd tartozék (opcionális)\",\"Ingyenes felszerelés\"]"
+      }
+    },
+    {
+      "data": {
+        "name": "Hólánc",
+        "slug": "snow-chains",
+        "type": "Téli felszerelés",
+        "dailyPrice": 1000,
+        "deposit": "0 Ft",
+        "photo": "/assets/accessories/holanc.jpg",
+        "tagline": "Biztonságos és megbízható közlekedés téli, havas útviszonyok között.",
+        "specsJson": "{\"típus\":\"Gyors rögzítésű hólánc\",\"kompatibilitás\":\"16\\\", 17\\\" gumiabroncsokra\"}",
+        "pricesJson": "[{\"days\":\"1+ nap\",\"price\":\"1 000 Ft/nap\"}]",
+        "extrasJson": "[\"Egyszerű felhelyezés\",\"Méretre szabott hordtáska\",\"Kesztyű tartozék\"]"
+      }
+    },
+    {
+      "data": {
+        "name": "Thule lehajtható kerékpártartó",
+        "slug": "bike-rack",
+        "type": "Szállítóeszköz",
+        "dailyPrice": 5000,
+        "deposit": "30 000 Ft (Autóval bérlés esetén: 0 Ft)",
+        "photo": "/assets/accessories/kerekpartarto.png",
+        "tagline": "Vonóhorogra szerelhető, lehajtható kerékpártartó 3 bicikli szállításához.",
+        "specsJson": "{\"kapacitás\":\"3 db kerékpár\",\"szerelés\":\"Vonóhorogra rögzíthető\",\"funkció\":\"Csomagtér nyitásához lehajtható\"}",
+        "pricesJson": "[{\"days\":\"1+ nap\",\"price\":\"5 000 Ft/nap\"}]",
+        "extrasJson": "[\"Lezárható kerékpárrögzítők\",\"Rendszámtábla tartó\",\"Beépített lámpatestek\"]"
+      }
+    }
+  ],
+  "returnEntity": true
+}

@@ -1,14 +1,15 @@
 import { defineConfig } from 'astro/config';
 import react from '@astrojs/react';
-import node from '@astrojs/node';
+import wix from '@wix/astro';
+import wixHostingAdapter from '@wix/astro-wix-hosting-adapter';
 
-// Local adapter only. `npm create @wix/new -- headless link` replaces this
-// with Wix's hosting adapter and adds the @wix/astro integration.
 export default defineConfig({
   output: 'server',
-  adapter: node({ mode: 'standalone' }),
-  integrations: [react()],
+  adapter: wixHostingAdapter(),
+  integrations: [react(), wix()],
   image: {
     domains: ['static.wixstatic.com', 'vorosbenjamin.github.io'],
   },
+  security: { checkOrigin: false },
+  devToolbar: { enabled: false },
 });

@@ -4,4 +4,5 @@ dist/
 .wix/
 .env
 .env.local
+wix-error.log
 .DS_Store
