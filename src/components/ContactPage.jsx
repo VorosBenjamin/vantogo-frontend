@@ -10,7 +10,7 @@ export function ContactPage({ navigate }) {
       taxId: '91572215-1-42',
       phone: '+36 30 330 3476',
       email: 'Somlai.Denes@VanToGo.hu',
-      photo: 'https://vorosbenjamin.github.io/vantogo-frontend/assets/team/somlai_denes.png',
+      photo: '/assets/team/somlai_denes.png',
       desc: 'Dénes intézi a kisbuszok műszaki felkészítését, a bérbeadást és a logisztikát, hogy minden járműnk kifogástalan állapotban várjon benneteket.'
     },
     {
@@ -20,7 +20,7 @@ export function ContactPage({ navigate }) {
       taxId: '90852291-1-33',
       phone: '+36 30 899 2064',
       email: 'Szabo.Levente@VanToGo.hu',
-      photo: 'https://vorosbenjamin.github.io/vantogo-frontend/assets/team/szabo_levente.png',
+      photo: '/assets/team/szabo_levente.png',
       desc: 'Levente felel az ügyfélkapcsolatokért, a foglalások adminisztrációjáért és az egyedi ügyféligények zökkenőmentes megvalósításáért.'
     }
   ];
@@ -28,7 +28,6 @@ export function ContactPage({ navigate }) {
   return (
     <div className="view container section" style={{ paddingTop: '32px', minHeight: '75vh' }}>
       <div className="section-head">
-        <span className="eyebrow"><span className="dot"></span>Kapcsolat & Rólunk</span>
         <h2>Kik üzemeltetik ezt a vállalkozást?</h2>
         <p>Ismerd meg a VanToGo! csapatát. Célunk, hogy a kisbusz bérlés egyszerű, biztonságos és átlátható legyen számodra.</p>
       </div>
@@ -86,7 +85,7 @@ export function ContactPage({ navigate }) {
                 gap: '12px',
                 marginTop: 'auto'
               }}>
-                <a href={`tel:${member.phone.replace(/\s/g, '')}`} style={{ 
+                <a className="contact-link" href={`tel:${member.phone.replace(/\s/g, '')}`} style={{
                   display: 'flex', 
                   alignItems: 'center', 
                   gap: '10px', 
@@ -99,7 +98,7 @@ export function ContactPage({ navigate }) {
                   {member.phone}
                 </a>
 
-                <a href={`mailto:${member.email}`} style={{ 
+                <a className="contact-link" href={`mailto:${member.email}`} style={{
                   display: 'flex', 
                   alignItems: 'center', 
                   gap: '10px', 

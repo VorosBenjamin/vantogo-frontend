@@ -1,12 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Icon, Button, SpecStat, Badge } from './Primitives';
-import { FLEET, TIME_OPTIONS } from './data';
+import { useCatalog } from './CatalogContext';
 
 export function VehicleDetails({ v, onBack, onBook, searchParams, setSearchParams }) {
+  const { timeOptions } = useCatalog();
   const [activePhoto, setActivePhoto] = useState(v.photo);
   const [deliveryOption, setDeliveryOption] = useState('telephely'); // 'telephely' | 'hazhoz'
   const [days, setDays] = useState(0);
   const [totalPrice, setTotalPrice] = useState(0);
+  const bookingFormRef = useRef(null);
 
   const { startDate, endDate, pickupTime, returnTime } = searchParams;
 
@@ -86,15 +88,25 @@ export function VehicleDetails({ v, onBack, onBook, searchParams, setSearchParam
 
   const formattedTotalPrice = totalPrice.toLocaleString('hu-HU') + ' Ft';
 
+  const handleMobileBookingClick = (e) => {
+    if (!startDate || !endDate) {
+      bookingFormRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      const missingField = !startDate
+        ? bookingFormRef.current?.querySelector('input[type="date"]')
+        : bookingFormRef.current?.querySelectorAll('input[type="date"]')?.[1];
+      window.setTimeout(() => missingField?.focus({ preventScroll: true }), 450);
+      return;
+    }
+
+    handleBookingSubmit(e);
+  };
+
   return (
     <div className="view container section" style={{ paddingTop: '32px' }}>
       <div className="product-layout">
         {/* Bal oldali részletes specifikációk */}
         <div>
-          <span className="eyebrow">
-            <span className="dot"></span> {v.seats} · {v.trans}
-          </span>
-          <h1 style={{ marginTop: '4px', marginBottom: '16px' }}>{v.name}</h1>
+          <h1 style={{ marginTop: '0px', marginBottom: '16px' }}>{v.name}</h1>
           <p className="lead" style={{ color: 'var(--fg-muted)', marginBottom: '32px' }}>
             {v.tagline}
           </p>
@@ -120,9 +132,10 @@ export function VehicleDetails({ v, onBack, onBook, searchParams, setSearchParam
           </div>
 
           {/* Specifikációs statisztikák / Kártyák */}
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: '16px', marginBlock: '40px' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(130px, 1fr))', gap: '16px', marginBlock: '40px' }}>
             <SpecStat icon="users" label="Férőhelyek" value={v.seats} />
             <SpecStat icon="cog" label="Váltó" value={v.trans} />
+            <SpecStat icon="compass" label="Meghajtás" value={v.driveShort || 'FWD'} />
             <SpecStat icon="briefcase" label="Csomagtér" value={v.luggage} />
             <SpecStat icon="gauge" label="Napi km limit" value={v.km} />
           </div>
@@ -135,15 +148,19 @@ export function VehicleDetails({ v, onBack, onBook, searchParams, setSearchParam
               </h4>
               <ul>
                 <li>
-                  <Icon name="check" size={14} className="ic" /> 
+                  <Icon name="check" size={14} className="ic" />
                   <span><strong>Üzemanyag:</strong> {v.fuel || 'Dízel'}</span>
                 </li>
                 <li>
-                  <Icon name="check" size={14} className="ic" /> 
+                  <Icon name="check" size={14} className="ic" />
                   <span><strong>Fogyasztás:</strong> {v.consumption || '7.5 L / 100 km'}</span>
                 </li>
                 <li>
-                  <Icon name="check" size={14} className="ic" /> 
+                  <Icon name="check" size={14} className="ic" />
+                  <span><strong>Meghajtás:</strong> {v.driveName || 'Elsőkerék-hajtás'}</span>
+                </li>
+                <li>
+                  <Icon name="check" size={14} className="ic" />
                   <span><strong>Váltó típusa:</strong> {v.trans}</span>
                 </li>
               </ul>
@@ -190,7 +207,7 @@ export function VehicleDetails({ v, onBack, onBook, searchParams, setSearchParam
         </div>
 
         {/* Jobb oldali sticky foglalási sziget */}
-        <aside className="book-side">
+        <aside className="book-side" ref={bookingFormRef}>
           <div className="price-row">
             <span style={{ color: 'var(--fg-muted)', fontWeight: 600 }}>Bérleti díj</span>
             <div className="big">
@@ -208,8 +225,9 @@ export function VehicleDetails({ v, onBack, onBook, searchParams, setSearchParam
               {/* Átvétel dátum + időpont egy sorban */}
               <div className="datetime-grid">
                 <div className="field">
-                  <label>Átvétel dátuma</label>
+                  <label htmlFor="vehicle-start-date">Átvétel dátuma</label>
                   <input
+                    id="vehicle-start-date"
                     type="date"
                     className="input"
                     value={startDate}
@@ -218,13 +236,14 @@ export function VehicleDetails({ v, onBack, onBook, searchParams, setSearchParam
                   />
                 </div>
                 <div className="field">
-                  <label>Időpont</label>
+                  <label htmlFor="vehicle-pickup-time">Időpont</label>
                   <select
+                    id="vehicle-pickup-time"
                     className="select"
                     value={pickupTime}
                     onChange={e => updateSearchParam('pickupTime', e.target.value)}
                   >
-                    {TIME_OPTIONS.map(t => <option key={t} value={t}>{t}</option>)}
+                    {timeOptions.map(t => <option key={t} value={t}>{t}</option>)}
                   </select>
                 </div>
               </div>
@@ -232,8 +251,9 @@ export function VehicleDetails({ v, onBack, onBook, searchParams, setSearchParam
               {/* Leadás dátum + időpont egy sorban */}
               <div className="datetime-grid">
                 <div className="field">
-                  <label>Leadás dátuma</label>
+                  <label htmlFor="vehicle-end-date">Leadás dátuma</label>
                   <input
+                    id="vehicle-end-date"
                     type="date"
                     className="input"
                     value={endDate}
@@ -242,13 +262,14 @@ export function VehicleDetails({ v, onBack, onBook, searchParams, setSearchParam
                   />
                 </div>
                 <div className="field">
-                  <label>Időpont</label>
+                  <label htmlFor="vehicle-return-time">Időpont</label>
                   <select
+                    id="vehicle-return-time"
                     className="select"
                     value={returnTime}
                     onChange={e => updateSearchParam('returnTime', e.target.value)}
                   >
-                    {TIME_OPTIONS.map(t => <option key={t} value={t}>{t}</option>)}
+                    {timeOptions.map(t => <option key={t} value={t}>{t}</option>)}
                   </select>
                 </div>
               </div>
@@ -324,7 +345,7 @@ export function VehicleDetails({ v, onBack, onBook, searchParams, setSearchParam
             </div>
           )}
         </div>
-        <Button variant="accent" icon="calendar-check" onClick={handleBookingSubmit}>
+        <Button variant="accent" icon="calendar-check" onClick={handleMobileBookingClick}>
           {days > 0 ? 'Foglalás' : 'Foglalási adatok'}
         </Button>
       </div>

@@ -1,0 +1,29 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { VanToGoApp } from '../App.jsx';
+import { getCatalog } from '../lib/wixCatalog';
+
+interface Props {
+  view: string;
+  title: string;
+  description: string;
+  selectedId?: string;
+  canonicalPath?: string;
+}
+
+const { view, title, description, selectedId = '', canonicalPath } = Astro.props;
+const initialCatalog = await getCatalog();
+const selectedCollection = view === 'vehicle-details'
+  ? initialCatalog.fleet
+  : view === 'accessory-details'
+    ? initialCatalog.accessories
+    : null;
+
+if (selectedCollection && !selectedCollection.some((item: { id?: string }) => item.id === selectedId)) {
+  Astro.response.status = 404;
+}
+---
+
+<BaseLayout title={title} description={description} canonicalPath={canonicalPath}>
+  <VanToGoApp initialView={view} selectedId={selectedId} initialCatalog={initialCatalog} client:load />
+</BaseLayout>

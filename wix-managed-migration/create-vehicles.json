@@ -1,0 +1,116 @@
+{
+  "collection": {
+    "id": "Vehicles",
+    "displayName": "Vehicles",
+    "fields": [
+      {
+        "key": "name",
+        "displayName": "Name",
+        "type": "TEXT",
+        "required": true
+      },
+      {
+        "key": "slug",
+        "displayName": "Slug",
+        "type": "TEXT",
+        "required": true
+      },
+      {
+        "key": "seats",
+        "displayName": "Seats",
+        "type": "TEXT"
+      },
+      {
+        "key": "trans",
+        "displayName": "Transmission",
+        "type": "TEXT"
+      },
+      {
+        "key": "drive",
+        "displayName": "Drive",
+        "type": "TEXT"
+      },
+      {
+        "key": "driveName",
+        "displayName": "Drive name",
+        "type": "TEXT"
+      },
+      {
+        "key": "driveShort",
+        "displayName": "Drive short",
+        "type": "TEXT"
+      },
+      {
+        "key": "km",
+        "displayName": "Daily distance",
+        "type": "TEXT"
+      },
+      {
+        "key": "luggage",
+        "displayName": "Luggage",
+        "type": "TEXT"
+      },
+      {
+        "key": "dailyPrice",
+        "displayName": "Daily price",
+        "type": "NUMBER"
+      },
+      {
+        "key": "photo",
+        "displayName": "Photo URL",
+        "type": "TEXT"
+      },
+      {
+        "key": "popular",
+        "displayName": "Popular",
+        "type": "BOOLEAN"
+      },
+      {
+        "key": "tagline",
+        "displayName": "Tagline",
+        "type": "TEXT"
+      },
+      {
+        "key": "fuel",
+        "displayName": "Fuel",
+        "type": "TEXT"
+      },
+      {
+        "key": "consumption",
+        "displayName": "Consumption",
+        "type": "TEXT"
+      },
+      {
+        "key": "deposit",
+        "displayName": "Deposit",
+        "type": "TEXT"
+      },
+      {
+        "key": "aircon",
+        "displayName": "Air conditioning",
+        "type": "TEXT"
+      },
+      {
+        "key": "engine",
+        "displayName": "Engine",
+        "type": "TEXT"
+      },
+      {
+        "key": "extrasJson",
+        "displayName": "Extras JSON",
+        "type": "TEXT"
+      },
+      {
+        "key": "galleryJson",
+        "displayName": "Gallery JSON",
+        "type": "TEXT"
+      }
+    ],
+    "permissions": {
+      "insert": "ADMIN",
+      "update": "ADMIN",
+      "remove": "ADMIN",
+      "read": "ANYONE"
+    }
+  }
+}

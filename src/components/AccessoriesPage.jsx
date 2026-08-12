@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { ACCESSORIES } from './data';
+import { useCatalog } from './CatalogContext';
 import { Icon, Button } from './Primitives';
 
 export function AccessoriesPage({ openAccessory }) {
+  const { accessories } = useCatalog();
   const [filterType, setFilterType] = useState('all');
 
   const categories = [
@@ -12,18 +13,17 @@ export function AccessoriesPage({ openAccessory }) {
     { id: 'Szállítóeszköz', label: 'Szállítóeszközök' }
   ];
 
-  const filtered = filterType === 'all' 
-    ? ACCESSORIES 
-    : ACCESSORIES.filter(a => a.type === filterType);
+  const filtered = filterType === 'all'
+    ? accessories
+    : accessories.filter(a => a.type === filterType);
 
   return (
     <div className="view container section" style={{ paddingTop: '32px', minHeight: '75vh' }}>
       <div className="section-head">
-        <span className="eyebrow"><span className="dot"></span>Bérelhető Kiegészítők</span>
         <h2>Tedd még kényelmesebbé az utazást</h2>
         <p>
           Bérelj kiegészítőket az autók mellé vagy akár önállóan is. 
-          Kisbusszal együtt történő bérlés esetén a kiegészítők **kauciója 0 Ft!**
+          Kisbusszal együtt történő bérlés esetén a kiegészítők <strong>kauciója 0 Ft!</strong>
         </p>
       </div>
 
@@ -33,6 +33,7 @@ export function AccessoriesPage({ openAccessory }) {
           {categories.map(cat => (
             <button
               key={cat.id}
+              className="accessory-filter-btn"
               onClick={() => setFilterType(cat.id)}
               style={{
                 padding: '10px 20px',

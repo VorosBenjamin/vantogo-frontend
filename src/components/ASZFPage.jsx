@@ -61,7 +61,6 @@ export function ASZFPage({ navigate }) {
   return (
     <div className="view container section" style={{ paddingTop: '32px', minHeight: '70vh' }}>
       <div className="section-head">
-        <span className="eyebrow"><span className="dot"></span>Dokumentumok</span>
         <h2>Általános Szerződési Feltételek (ÁSZF)</h2>
         <p>Kérjük, olvasd el figyelmesen a kisbuszaink bérlésére vonatkozó szabályokat és bérlési feltételeket.</p>
       </div>
@@ -84,7 +83,7 @@ export function ASZFPage({ navigate }) {
               2. Bérlőre és vezetőre vonatkozó feltételek
             </h3>
             <ul style={{ margin: 0, paddingLeft: '20px', color: 'var(--fg-muted)', fontSize: '15px', lineHeight: '1.6', display: 'flex', flexDirection: 'column', gap: '8px' }}>
-              <li>A bérlet feltétele a betöltött <strong>21. életév</strong>.</li>
+              <li>A bérlet feltétele a betöltött <strong>18. életév</strong>.</li>
               <li>A jármű vezetéséhez legalább <strong>1 éve érvényes B kategóriás jogosítvány</strong> szükséges.</li>
               <li>A járművet kizárólag a Bérleti Szerződésben megnevezett személy(ek) vezethetik. Harmadik félnek a jármű vezetése nem engedhető át.</li>
               <li>Szükséges dokumentumok bérléskor: érvényes személyi igazolvány (vagy útlevél), lakcímkártya és jogosítvány eredeti példánya.</li>

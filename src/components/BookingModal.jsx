@@ -1,10 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { Icon, Button } from './Primitives';
-import { FLEET, ACCESSORIES, TIME_OPTIONS } from './data';
+import { useCatalog } from './CatalogContext';
+import { getTodayInBudapest, isAtLeast18On } from '../lib/ageValidation';
 
 export function BookingModal({ bookingData, onClose, onConfirm }) {
+  const { fleet, accessories, timeOptions } = useCatalog();
   const [step, setStep] = useState(1); // 1: Contact details, 2: Document/Contract details
   const [success, setSuccess] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState('');
+  const [step1Error, setStep1Error] = useState('');
+  const [companyWebsite, setCompanyWebsite] = useState('');
 
   // Dynamic booking data state which can be edited inside the modal
   const [currentBooking, setCurrentBooking] = useState(bookingData);
@@ -22,6 +28,7 @@ export function BookingModal({ bookingData, onClose, onConfirm }) {
   const [licenseNumber, setLicenseNumber] = useState('');
   const [birthPlace, setBirthPlace] = useState('');
   const [birthDate, setBirthDate] = useState('');
+  const [ageError, setAgeError] = useState('');
   const [zip, setZip] = useState('');
   const [city, setCity] = useState('');
   const [address, setAddress] = useState('');
@@ -66,7 +73,7 @@ export function BookingModal({ bookingData, onClose, onConfirm }) {
         setEditDays(calculatedDays);
         
         if (currentBooking.isAccessory) {
-          const selectedAccessory = ACCESSORIES.find(a => a.id === editVehicleId) || ACCESSORIES[0];
+          const selectedAccessory = accessories.find(a => a.id === editVehicleId) || accessories[0];
           let pricePerDay = 0;
           if (selectedAccessory.id === 'thule-jetbag-3000') {
             if (calculatedDays <= 3) pricePerDay = 2500;
@@ -78,7 +85,7 @@ export function BookingModal({ bookingData, onClose, onConfirm }) {
           let total = calculatedDays * pricePerDay;
           setEditTotalPrice(total);
         } else {
-          const selectedVehicle = FLEET.find(f => f.id === editVehicleId) || FLEET[0];
+          const selectedVehicle = fleet.find(f => f.id === editVehicleId) || fleet[0];
           const pricePerDay = parseInt(selectedVehicle.price.replace(/\s/g, ''), 10);
           let total = calculatedDays * pricePerDay;
           
@@ -95,7 +102,7 @@ export function BookingModal({ bookingData, onClose, onConfirm }) {
       setEditDays(0);
       setEditTotalPrice(0);
     }
-  }, [editStartDate, editPickupTime, editEndDate, editReturnTime, editDeliveryOption, editVehicleId, currentBooking.isAccessory]);
+  }, [editStartDate, editPickupTime, editEndDate, editReturnTime, editDeliveryOption, editVehicleId, currentBooking.isAccessory, accessories, fleet]);
 
   const handleSaveSummaryEdit = (e) => {
     e.preventDefault();
@@ -112,8 +119,8 @@ export function BookingModal({ bookingData, onClose, onConfirm }) {
     }
 
     const selectedItem = currentBooking.isAccessory
-      ? (ACCESSORIES.find(a => a.id === editVehicleId) || ACCESSORIES[0])
-      : (FLEET.find(f => f.id === editVehicleId) || FLEET[0]);
+      ? (accessories.find(a => a.id === editVehicleId) || accessories[0])
+      : (fleet.find(f => f.id === editVehicleId) || fleet[0]);
 
     // Update current booking state locally
     const updatedBooking = {
@@ -135,6 +142,7 @@ export function BookingModal({ bookingData, onClose, onConfirm }) {
 
   const handleStep1Submit = (e) => {
     e.preventDefault();
+    setStep1Error('');
     if (!agree) {
       window.dispatchEvent(new CustomEvent('vantogoToast', { detail: 'A foglaláshoz el kell fogadnod az adatkezelési tájékoztatót!' }));
       return;
@@ -147,6 +155,8 @@ export function BookingModal({ bookingData, onClose, onConfirm }) {
       customerEmail: email,
       customerPhone: phone,
       customerNote: note,
+      companyWebsite,
+      privacyAccepted: agree,
       submittedAt: new Date().toISOString()
     };
 
@@ -155,8 +165,51 @@ export function BookingModal({ bookingData, onClose, onConfirm }) {
     setStep(2);
   };
 
-  const handleStep2Submit = (e) => {
+  const submitBooking = async (finalData) => {
+    setSubmitting(true);
+    setSubmitError('');
+    try {
+      await onConfirm?.(finalData);
+      setSuccess(true);
+    } catch (error) {
+      const message = error.message || 'Az ajánlatkérés mentése nem sikerült.';
+      if (error.field === 'birthDate') {
+        setAgeError(message);
+      } else if (['customerName', 'customerEmail', 'customerPhone', 'privacyAccepted', 'booking'].includes(error.field)) {
+        setStep1Error(message);
+        setStep(1);
+      } else {
+        setSubmitError(message);
+      }
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  const validateVehicleAge = (dateOfBirth = birthDate) => {
+    if (currentBooking.isAccessory) {
+      setAgeError('');
+      return true;
+    }
+
+    if (!dateOfBirth) {
+      setAgeError('Az életkor ellenőrzéséhez add meg a születési idődet.');
+      return false;
+    }
+
+    if (!isAtLeast18On(dateOfBirth, getTodayInBudapest())) {
+      setAgeError('18 év alattiak nem tudnak foglalni.');
+      return false;
+    }
+
+    setAgeError('');
+    return true;
+  };
+
+  const handleStep2Submit = async (e) => {
     e.preventDefault();
+    if (!validateVehicleAge()) return;
+
     const s1Data = step1Data || currentBooking;
     
     const finalData = {
@@ -171,23 +224,20 @@ export function BookingModal({ bookingData, onClose, onConfirm }) {
       hasDocumentsProvided: true
     };
 
-    if (onConfirm) {
-      onConfirm(finalData);
-    }
-    setSuccess(true);
+    await submitBooking(finalData);
   };
 
-  const handleSkipStep2 = () => {
+  const handleSkipStep2 = async () => {
+    if (!validateVehicleAge()) return;
+
     const s1Data = step1Data || currentBooking;
     const finalData = {
       ...s1Data,
+      birthDate,
       hasDocumentsProvided: false
     };
 
-    if (onConfirm) {
-      onConfirm(finalData);
-    }
-    setSuccess(true);
+    await submitBooking(finalData);
   };
 
   if (!bookingData) return null;
@@ -222,6 +272,13 @@ export function BookingModal({ bookingData, onClose, onConfirm }) {
               Kérjük, add meg a kapcsolattartási adataidat az ajánlat elkészítéséhez.
             </p>
 
+            {step1Error && (
+              <div role="alert" style={{ background: 'var(--danger-bg)', color: 'var(--danger)', border: '1px solid color-mix(in srgb, var(--danger) 30%, transparent)', borderRadius: '12px', padding: '12px 14px', marginBottom: '16px', fontSize: '14px', lineHeight: 1.45 }}>
+                <strong style={{ display: 'block', marginBottom: '3px' }}>Ezt az adatot ellenőrizd:</strong>
+                {step1Error}
+              </div>
+            )}
+
             {/* Dátum & jármű szerkesztő mód a modalon belül */}
             {isEditingSummary ? (
               <form onSubmit={handleSaveSummaryEdit} style={{ background: 'var(--paper-2)', border: '1px solid var(--line)', borderRadius: 'var(--r-lg)', padding: '16px', marginBottom: '24px' }}>
@@ -239,8 +296,8 @@ export function BookingModal({ bookingData, onClose, onConfirm }) {
                       style={{ width: '100%' }}
                     >
                       {currentBooking.isAccessory 
-                        ? ACCESSORIES.map(a => <option key={a.id} value={a.id}>{a.name}</option>)
-                        : FLEET.map(f => <option key={f.id} value={f.id}>{f.name}</option>)
+                        ? accessories.map(a => <option key={a.id} value={a.id}>{a.name}</option>)
+                        : fleet.map(f => <option key={f.id} value={f.id}>{f.name}</option>)
                       }
                     </select>
                   </div>
@@ -264,7 +321,7 @@ export function BookingModal({ bookingData, onClose, onConfirm }) {
                         value={editPickupTime}
                         onChange={(e) => setEditPickupTime(e.target.value)}
                       >
-                        {TIME_OPTIONS.map(t => <option key={t} value={t}>{t}</option>)}
+                        {timeOptions.map(t => <option key={t} value={t}>{t}</option>)}
                       </select>
                     </div>
                   </div>
@@ -288,7 +345,7 @@ export function BookingModal({ bookingData, onClose, onConfirm }) {
                         value={editReturnTime}
                         onChange={(e) => setEditReturnTime(e.target.value)}
                       >
-                        {TIME_OPTIONS.map(t => <option key={t} value={t}>{t}</option>)}
+                        {timeOptions.map(t => <option key={t} value={t}>{t}</option>)}
                       </select>
                     </div>
                   </div>
@@ -427,9 +484,22 @@ export function BookingModal({ bookingData, onClose, onConfirm }) {
 
             <form onSubmit={handleStep1Submit}>
               <div className="fields" style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
-                <div className="field">
-                  <label>Teljes név</label>
+                <div aria-hidden="true" style={{ position: 'absolute', left: '-10000px', width: '1px', height: '1px', overflow: 'hidden' }}>
+                  <label>Weboldal</label>
                   <input
+                    type="text"
+                    name="companyWebsite"
+                    tabIndex="-1"
+                    autoComplete="off"
+                    value={companyWebsite}
+                    onChange={(e) => setCompanyWebsite(e.target.value)}
+                  />
+                </div>
+                <p className="required-fields-note"><span aria-hidden="true">*</span> A csillaggal jelölt mezők kitöltése kötelező.</p>
+                <div className="field">
+                  <label htmlFor="booking-name">Teljes név <span className="required-mark" aria-hidden="true">*</span><span className="sr-only"> (kötelező)</span></label>
+                  <input
+                    id="booking-name"
                     type="text"
                     className="input"
                     placeholder="Minta János"
@@ -440,8 +510,9 @@ export function BookingModal({ bookingData, onClose, onConfirm }) {
                 </div>
 
                 <div className="field">
-                  <label>E-mail cím</label>
+                  <label htmlFor="booking-email">E-mail cím <span className="required-mark" aria-hidden="true">*</span><span className="sr-only"> (kötelező)</span></label>
                   <input
+                    id="booking-email"
                     type="email"
                     className="input"
                     placeholder="janos@minta.hu"
@@ -452,8 +523,9 @@ export function BookingModal({ bookingData, onClose, onConfirm }) {
                 </div>
 
                 <div className="field">
-                  <label>Telefonszám</label>
+                  <label htmlFor="booking-phone">Telefonszám <span className="required-mark" aria-hidden="true">*</span><span className="sr-only"> (kötelező)</span></label>
                   <input
+                    id="booking-phone"
                     type="tel"
                     className="input"
                     placeholder="+36 30 123 4567"
@@ -464,8 +536,9 @@ export function BookingModal({ bookingData, onClose, onConfirm }) {
                 </div>
 
                 <div className="field">
-                  <label>Megjegyzés / Egyedi kérések (opcionális)</label>
+                  <label htmlFor="booking-note">Megjegyzés / Egyedi kérések (opcionális)</label>
                   <textarea
+                    id="booking-note"
                     className="input"
                     placeholder="Pl. tetőboxot szeretnék kérni, gyermekülés igénye stb."
                     rows="3"
@@ -483,7 +556,7 @@ export function BookingModal({ bookingData, onClose, onConfirm }) {
                     onChange={(e) => setAgree(e.target.checked)}
                   />
                   <span style={{ fontSize: '13px', lineHeight: '1.4' }}>
-                    Elfogadom az <a href="#" target="_blank" style={{ display: 'inline', padding: 0, textDecoration: 'underline', color: 'var(--go-600)' }}>adatkezelési tájékoztatót</a> és hozzájárulok az adataim kezeléséhez.
+                    Elfogadom az <a href="/adatvedelem/" target="_blank" rel="noreferrer" style={{ display: 'inline', padding: 0, textDecoration: 'underline', color: 'var(--go-600)' }}>adatkezelési tájékoztatót</a> és hozzájárulok az adataim kezeléséhez.
                   </span>
                 </label>
               </div>
@@ -496,21 +569,41 @@ export function BookingModal({ bookingData, onClose, onConfirm }) {
                 icon="arrow-right"
                 disabled={isEditingSummary} // Disable step navigation when editing dates locally
               >
-                Ajánlatkérés elküldése
+                Tovább a szerződésadatokhoz
               </Button>
             </form>
           </div>
         ) : (
           // STEP 2: Document info (Optional for contract prep)
           <div>
+            <Button
+              type="button"
+              variant="ghost"
+              size="sm"
+              icon="arrow-left"
+              onClick={() => {
+                setSubmitError('');
+                setAgeError('');
+                setStep1Error('');
+                setStep(1);
+              }}
+              disabled={submitting}
+              style={{ minHeight: '44px', margin: '-8px 0 12px -8px', paddingInline: '10px' }}
+            >
+              Vissza
+            </Button>
+
             <div style={{ display: 'flex', alignItems: 'center', gap: '10px', background: 'var(--go-50)', border: '1px solid var(--go-100)', borderRadius: 'var(--r-lg)', padding: '14px', marginBottom: '20px' }}>
               <Icon name="check-circle" size={24} style={{ color: 'var(--go-600)', flex: 'none' }} />
               <div>
                 <strong style={{ display: 'block', fontSize: '14.5px', color: 'var(--go-800)', marginBottom: '2px' }}>
-                  Az érdeklődésedet rögzítettük! 🎉
+                  Az ajánlatkérés még nincs elküldve
                 </strong>
                 <span style={{ display: 'block', fontSize: '13px', color: 'var(--go-700)', lineHeight: '1.4' }}>
-                  A bérleti szerződés gyors előkészítéséhez és a helyszíni átvétel felgyorsításához megadhatod a bérléshez szükséges adatokat most is.
+                  A bérleti szerződés gyors előkészítéséhez megadhatod az adatokat most, vagy elküldheted nélkülük az ajánlatkérést.
+                </span>
+                <span style={{ display: 'block', fontSize: '12.5px', color: 'var(--go-800)', lineHeight: '1.4', marginTop: '5px', fontWeight: 700 }}>
+                  A születési idő az életkor ellenőrzéséhez kihagyás esetén is kötelező.
                 </span>
               </div>
             </div>
@@ -518,8 +611,13 @@ export function BookingModal({ bookingData, onClose, onConfirm }) {
             <h3 style={{ fontSize: '18px', margin: '0 0 16px 0', fontFamily: 'var(--font-display)' }}>Szerződéskötéshez szükséges adatok</h3>
 
             <form onSubmit={handleStep2Submit}>
+              {submitError && (
+                <div role="alert" style={{ background: 'var(--danger-bg)', color: 'var(--danger)', border: '1px solid color-mix(in srgb, var(--danger) 30%, transparent)', borderRadius: '12px', padding: '12px 14px', marginBottom: '16px', fontSize: '14px', lineHeight: 1.45 }}>
+                  {submitError}
+                </div>
+              )}
               <div className="fields" style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+                <div className="modal-field-grid">
                   <div className="field">
                     <label>Személyi igazolvány száma</label>
                     <input
@@ -544,7 +642,7 @@ export function BookingModal({ bookingData, onClose, onConfirm }) {
                   </div>
                 </div>
 
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+                <div className="modal-field-grid">
                   <div className="field">
                     <label>Születési hely</label>
                     <input
@@ -557,18 +655,34 @@ export function BookingModal({ bookingData, onClose, onConfirm }) {
                     />
                   </div>
                   <div className="field">
-                    <label>Születési idő</label>
+                    <label htmlFor="booking-birth-date">Születési idő <span className="required-mark" aria-hidden="true">*</span><span className="sr-only"> (kötelező)</span></label>
                     <input
+                      id="booking-birth-date"
                       type="date"
                       className="input"
                       required
                       value={birthDate}
-                      onChange={(e) => setBirthDate(e.target.value)}
+                      aria-invalid={Boolean(ageError)}
+                      aria-describedby={ageError ? 'booking-age-error' : undefined}
+                      onChange={(e) => {
+                        const nextBirthDate = e.target.value;
+                        setBirthDate(nextBirthDate);
+                        if (ageError || nextBirthDate) validateVehicleAge(nextBirthDate);
+                      }}
                     />
+                    {ageError && (
+                      <span
+                        id="booking-age-error"
+                        role="alert"
+                        style={{ display: 'block', color: 'var(--danger)', fontSize: '13px', lineHeight: 1.4, marginTop: '6px' }}
+                      >
+                        {ageError}
+                      </span>
+                    )}
                   </div>
                 </div>
 
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 3fr', gap: '12px' }}>
+                <div className="modal-field-grid modal-field-grid--address">
                   <div className="field">
                     <label>Irányítószám</label>
                     <input
@@ -613,8 +727,9 @@ export function BookingModal({ bookingData, onClose, onConfirm }) {
                   className="btn--block"
                   style={{ paddingBlock: '12px' }}
                   icon="check"
+                  disabled={submitting}
                 >
-                  Adatok mentése és befejezés
+                  {submitting ? 'Mentés folyamatban…' : 'Adatok mentése és befejezés'}
                 </Button>
                 <Button
                   type="button"
@@ -622,8 +737,9 @@ export function BookingModal({ bookingData, onClose, onConfirm }) {
                   className="btn--block"
                   style={{ paddingBlock: '12px', border: '1px solid var(--line)' }}
                   onClick={handleSkipStep2}
+                  disabled={submitting}
                 >
-                  Kihagyás és befejezés
+                  Dokumentumadatok kihagyása és befejezés
                 </Button>
               </div>
             </form>

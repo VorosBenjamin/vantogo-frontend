@@ -1,96 +1,95 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { FleetCard } from './FleetCard';
-import { FLEET } from './data';
+import { FleetFilter } from './FleetFilter';
+import { useCatalog } from './CatalogContext';
 import { Button, Icon } from './Primitives';
 
 export function FleetPage({ openVehicle }) {
-  const [transFilter, setTransFilter] = useState({ manual: true, auto: true });
-  const [seatsFilter, setSeatsFilter] = useState({ seats8: true, seats9: true });
+  const { fleet } = useCatalog();
+  const [selected, setSelected] = useState({ seats: null, trans: null, drive: null });
+  const [sortValue, setSortValue] = useState('popular');
 
-  // Filter logic
-  const filteredFleet = FLEET.filter(v => {
-    const isManual = v.trans.toLowerCase().includes('manuál');
-    const isAuto = v.trans.toLowerCase().includes('automat');
-    
-    const matchesTrans = 
-      (transFilter.manual && isManual) || 
-      (transFilter.auto && isAuto);
+  const normalizeTrans = value => value?.toLowerCase().includes('automat') ? 'auto' : 'manual';
+  const normalizeSeats = value => value?.includes('8') ? '8' : '9';
 
-    const is8Seats = v.seats.includes('8');
-    const is9Seats = v.seats.includes('9');
-    
-    const matchesSeats = 
-      (seatsFilter.seats8 && is8Seats) || 
-      (seatsFilter.seats9 && is9Seats);
+  const groups = useMemo(() => [
+    {
+      id: 'seats',
+      label: 'Férőhelyek',
+      options: [
+        { id: '8', label: '8 személyes', count: fleet.filter(v => normalizeSeats(v.seats) === '8').length },
+        { id: '9', label: '9 személyes', count: fleet.filter(v => normalizeSeats(v.seats) === '9').length },
+      ],
+    },
+    {
+      id: 'trans',
+      label: 'Sebességváltó',
+      options: [
+        { id: 'auto', label: 'Automata', count: fleet.filter(v => normalizeTrans(v.trans) === 'auto').length },
+        { id: 'manual', label: 'Manuális', count: fleet.filter(v => normalizeTrans(v.trans) === 'manual').length },
+      ],
+    },
+    {
+      id: 'drive',
+      label: 'Meghajtás',
+      options: [
+        { id: 'fwd', label: 'Elsőkerék-hajtás', count: fleet.filter(v => (v.drive || 'fwd') === 'fwd').length },
+        { id: 'rwd', label: 'Hátsókerék-hajtás', count: fleet.filter(v => v.drive === 'rwd').length },
+        { id: 'awd', label: 'Összkerékhajtás', count: fleet.filter(v => v.drive === 'awd').length },
+      ].filter(option => option.count > 0),
+    },
+  ], [fleet]);
 
-    return matchesTrans && matchesSeats;
-  });
+  const filteredFleet = useMemo(() => {
+    const filtered = fleet.filter(vehicle => (
+      (!selected.seats || normalizeSeats(vehicle.seats) === selected.seats)
+      && (!selected.trans || normalizeTrans(vehicle.trans) === selected.trans)
+      && (!selected.drive || (vehicle.drive || 'fwd') === selected.drive)
+    ));
+
+    return [...filtered].sort((a, b) => {
+      const priceA = Number(String(a.price).replace(/\D/g, ''));
+      const priceB = Number(String(b.price).replace(/\D/g, ''));
+      if (sortValue === 'price-asc') return priceA - priceB;
+      if (sortValue === 'price-desc') return priceB - priceA;
+      return Number(Boolean(b.popular)) - Number(Boolean(a.popular));
+    });
+  }, [fleet, selected, sortValue]);
+
+  const toggleFilter = (groupId, optionId) => {
+    setSelected(current => ({
+      ...current,
+      [groupId]: current[groupId] === optionId ? null : optionId,
+    }));
+  };
+
+  const clearFilters = () => setSelected({ seats: null, trans: null, drive: null });
 
   return (
-    <div className="view container section" style={{ paddingTop: '32px' }}>
-      <div className="section-head">
-        <span className="eyebrow"><span className="dot"></span>Flottánk</span>
-        <h2>Bérelhető kisbuszaink</h2>
+    <main className="view fleet-page container section">
+      <div className="section-head fleet-page-head">
+        <span className="eyebrow"><span className="dot" />Autóink</span>
+        <h1>Bérelhető kisbuszaink</h1>
         <p>Válaszd ki a számodra legmegfelelőbb, tiszta és megbízható 8 vagy 9 fős mikrobuszt.</p>
       </div>
 
       <div className="cat-layout">
-        {/* Szűrők bal oldalon */}
-        <aside className="filters">
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '14px' }}>
-            <h4 style={{ margin: 0 }}>Szűrők</h4>
-            <Icon name="sliders-horizontal" size={16} style={{ color: 'var(--go-600)' }} />
-          </div>
+        <FleetFilter
+          groups={groups}
+          selected={selected}
+          onToggle={toggleFilter}
+          onClearAll={clearFilters}
+          resultCount={filteredFleet.length}
+          sortOptions={[
+            { value: 'popular', label: 'Népszerűség szerint' },
+            { value: 'price-asc', label: 'Ár: növekvő' },
+            { value: 'price-desc', label: 'Ár: csökkenő' },
+          ]}
+          sortValue={sortValue}
+          onSortChange={setSortValue}
+        />
 
-          {/* Váltó szűrő */}
-          <div className="filter-group">
-            <h5 style={{ margin: '0 0 10px 0', fontSize: '14px', fontWeight: 700 }}>Sebességváltó</h5>
-            <label className="check">
-              <input
-                type="checkbox"
-                checked={transFilter.manual}
-                onChange={(e) => setTransFilter(prev => ({ ...prev, manual: e.target.checked }))}
-              />
-              <span>Manuális váltó</span>
-            </label>
-            <label className="check">
-              <input
-                type="checkbox"
-                checked={transFilter.auto}
-                onChange={(e) => setTransFilter(prev => ({ ...prev, auto: e.target.checked }))}
-              />
-              <span>Automata váltó</span>
-            </label>
-          </div>
-
-          {/* Férőhely szűrő */}
-          <div className="filter-group" style={{ borderBottom: 'none', paddingBottom: 0 }}>
-            <h5 style={{ margin: '0 0 10px 0', fontSize: '14px', fontWeight: 700 }}>Férőhelyek</h5>
-            <label className="check">
-              <input
-                type="checkbox"
-                checked={seatsFilter.seats8}
-                onChange={(e) => setSeatsFilter(prev => ({ ...prev, seats8: e.target.checked }))}
-              />
-              <span>8 személyes</span>
-            </label>
-            <label className="check">
-              <input
-                type="checkbox"
-                checked={seatsFilter.seats9}
-                onChange={(e) => setSeatsFilter(prev => ({ ...prev, seats9: e.target.checked }))}
-              />
-              <span>9 személyes</span>
-            </label>
-          </div>
-        </aside>
-
-        {/* Autók rácsa jobb oldalon */}
-        <div>
-          <div className="cat-bar">
-            <span className="count">Találatok száma: <strong>{filteredFleet.length}</strong> autó</span>
-          </div>
-
+        <div className="fleet-results" aria-live="polite">
           {filteredFleet.length > 0 ? (
             <div className="fleet-grid">
               {filteredFleet.map(v => (
@@ -98,21 +97,16 @@ export function FleetPage({ openVehicle }) {
               ))}
             </div>
           ) : (
-            <div style={{ textAlign: 'center', paddingBlock: '60px', background: 'var(--card)', borderRadius: 'var(--r-lg)', border: '1px dashed var(--line)' }}>
+            <div className="fleet-empty">
               <Icon name="search-code" size={40} style={{ color: 'var(--ink-400)', marginBottom: '16px' }} />
               <h3>Nincs találat</h3>
-              <p style={{ color: 'var(--fg-muted)' }}>Módosítsd a szűrőfeltételeket a kereséshez.</p>
-              <Button variant="ghost" style={{ marginTop: '12px' }} onClick={() => {
-                setTransFilter({ manual: true, auto: true });
-                setSeatsFilter({ seats8: true, seats9: true });
-              }}>
-                Szűrők alaphelyzetbe állítása
-              </Button>
+              <p>Módosítsd a szűrőfeltételeket a kereséshez.</p>
+              <Button variant="ghost" onClick={clearFilters}>Szűrők törlése</Button>
             </div>
           )}
         </div>
       </div>
-    </div>
+    </main>
   );
 }
 export default FleetPage;

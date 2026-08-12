@@ -5,7 +5,6 @@ export function AdatvedelemPage({ navigate }) {
   return (
     <div className="view container section" style={{ paddingTop: '32px', minHeight: '70vh' }}>
       <div className="section-head">
-        <span className="eyebrow"><span className="dot"></span>Jogi nyilatkozatok</span>
         <h2>Adatkezelési Tájékoztató</h2>
         <p>A VanToGo! gépjármű bérbeadói elkötelezettek a személyes adatok védelme iránt. Az alábbiakban részletezzük az adatkezelési szabályainkat.</p>
       </div>

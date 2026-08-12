@@ -1,19 +1,19 @@
 import React from 'react';
 import { FAQList } from './FleetCard';
-import { FAQS } from './data';
+import { useCatalog } from './CatalogContext';
 import { Button, Icon } from './Primitives';
 
 export function FAQPage({ navigate }) {
+  const { faqs } = useCatalog();
   return (
     <div className="view container section" style={{ paddingTop: '32px', minHeight: '60vh' }}>
       <div className="section-head center">
-        <span className="eyebrow" style={{ justifyContent: 'center' }}><span className="dot"></span>Támogatás</span>
         <h2>Gyakori kérdések</h2>
         <p>Minden fontos információ a bérlés menetéről, a kaucióról, a biztosításról és a bérleti feltételekről.</p>
       </div>
 
       <div style={{ maxWidth: '800px', marginInline: 'auto', marginBottom: '56px' }}>
-        <FAQList items={FAQS} />
+        <FAQList items={faqs} />
       </div>
 
       {/* CTA Band ha még maradt kérdés */}
@@ -26,7 +26,7 @@ export function FAQPage({ navigate }) {
           <a href="mailto:info@vantogo.hu" className="btn btn--accent" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', color: '#fff', textDecoration: 'none' }}>
             <Icon name="mail" size={18} /> info@vantogo.hu
           </a>
-          <Button variant="ghost" className="btn--ondark" icon="phone" onClick={() => window.dispatchEvent(new CustomEvent('vantogoToast', { detail: 'Kérjük, hívd a kapcsolat oldalon lévő telefonszámok egyikét!' }))}>
+          <Button variant="ghost" className="btn--ondark" icon="phone" onClick={() => navigate('contact')}>
             Kapcsolatfelvétel
           </Button>
         </div>

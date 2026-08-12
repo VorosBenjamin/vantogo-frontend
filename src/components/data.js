@@ -11,10 +11,13 @@ export const FLEET = [
     name: 'Mercedes-Benz Vito',
     seats: '9 személyes',
     trans: 'Manuális',
+    drive: 'fwd',
+    driveName: 'Elsőkerék-hajtás',
+    driveShort: 'FWD',
     km: '250 km/nap',
     luggage: '1 300 L',
     price: '33 000',
-    photo: 'https://vorosbenjamin.github.io/vantogo-frontend/assets/fleet/crop-vito-black.png',
+    photo: '/assets/fleet/crop-vito-black.png',
     popular: true,
     tagline: '9 személyes, takarékos és kényelmes utazó kisbusz.',
     fuel: 'Dízel',
@@ -24,7 +27,7 @@ export const FLEET = [
     engine: '1598 ccm, 114 LE',
     extras: ['Esőszenzor', 'Tempomat', 'Guminyomás szonda', 'ISOFIX rögzítési pontok', 'Központi zár', 'Elektromos ablakok'],
     gallery: [
-      'https://vorosbenjamin.github.io/vantogo-frontend/assets/fleet/crop-vito-black.png'
+      '/assets/fleet/crop-vito-black.png'
     ]
   },
   {
@@ -32,10 +35,13 @@ export const FLEET = [
     name: 'Opel Vivaro',
     seats: '9 személyes',
     trans: 'Manuális',
+    drive: 'fwd',
+    driveName: 'Elsőkerék-hajtás',
+    driveShort: 'FWD',
     km: '250 km/nap',
     luggage: '1 200 L',
     price: '30 000',
-    photo: 'https://vorosbenjamin.github.io/vantogo-frontend/assets/fleet/crop-opel-vivaro.png',
+    photo: '/assets/fleet/crop-opel-vivaro.png',
     popular: false,
     tagline: 'Kedvező árú, gazdaságos kisbusz a hosszabb utakra.',
     fuel: 'Dízel',
@@ -45,7 +51,7 @@ export const FLEET = [
     engine: '1.6 CDTI, 125 LE',
     extras: ['Ülésfűtés', 'Dupla tolóajtó', 'Parkolóradar elől-hátul', 'Tempomat', 'Vonóhorog', 'Poroltó'],
     gallery: [
-      'https://vorosbenjamin.github.io/vantogo-frontend/assets/fleet/crop-opel-vivaro.png'
+      '/assets/fleet/crop-opel-vivaro.png'
     ]
   },
   {
@@ -53,10 +59,13 @@ export const FLEET = [
     name: 'Mercedes-Benz Viano 115 CDI L',
     seats: '8 személyes',
     trans: 'Automata',
+    drive: 'rwd',
+    driveName: 'Hátsókerék-hajtás',
+    driveShort: 'RWD',
     km: '250 km/nap',
     luggage: '1 300 L',
     price: '26 000',
-    photo: 'https://vorosbenjamin.github.io/vantogo-frontend/assets/fleet/crop-viano-silver.png',
+    photo: '/assets/fleet/crop-viano-silver.png',
     popular: false,
     tagline: 'Automata váltó és prémium kényelem a kényelmes utazáshoz.',
     fuel: 'Dízel',
@@ -66,7 +75,7 @@ export const FLEET = [
     engine: '2148 ccm, 150 LE',
     extras: ['Bőr belső', 'Automata váltó', 'Tempomat', 'Parkolóradar elől-hátul', 'Dönthető karfás ülések', 'Dupla tolóajtó', 'Vonóhorog'],
     gallery: [
-      'https://vorosbenjamin.github.io/vantogo-frontend/assets/fleet/crop-viano-silver.png'
+      '/assets/fleet/crop-viano-silver.png'
     ]
   },
   {
@@ -74,10 +83,13 @@ export const FLEET = [
     name: 'Mercedes-Benz Vito 115 CDI L',
     seats: '8 személyes',
     trans: 'Manuális',
+    drive: 'rwd',
+    driveName: 'Hátsókerék-hajtás',
+    driveShort: 'RWD',
     km: '250 km/nap',
     luggage: '1 300 L',
     price: '24 000',
-    photo: 'https://vorosbenjamin.github.io/vantogo-frontend/assets/fleet/crop-vito-silver.png',
+    photo: '/assets/fleet/crop-vito-silver.png',
     popular: false,
     tagline: 'Hosszított kivitel, kivehető ülésekkel — pakolj, amennyit csak kell.',
     fuel: 'Dízel',
@@ -87,7 +99,7 @@ export const FLEET = [
     engine: '2148 ccm, 150 LE',
     extras: ['Kivehető ülések', 'Parkolóradar elől-hátul', 'Tempomat', 'Vonóhorog', 'CD rádió', 'Multikormány'],
     gallery: [
-      'https://vorosbenjamin.github.io/vantogo-frontend/assets/fleet/crop-vito-silver.png'
+      '/assets/fleet/crop-vito-silver.png'
     ]
   },
   {
@@ -95,6 +107,9 @@ export const FLEET = [
     name: 'Mercedes-Benz Vito Extra Long 115 CDI',
     seats: '9 személyes',
     trans: 'Manuális',
+    drive: 'rwd',
+    driveName: 'Hátsókerék-hajtás',
+    driveShort: 'RWD',
     km: '250 km/nap',
     luggage: '1 400 L',
     price: '24 000',
@@ -120,7 +135,7 @@ export const ACCESSORIES = [
     type: 'Tetőbox',
     price: '2 500',
     deposit: '20 000 Ft (Autóval bérlés esetén: 0 Ft)',
-    photo: 'https://vorosbenjamin.github.io/vantogo-frontend/assets/accessories/jetbag.png',
+    photo: '/assets/accessories/jetbag.png',
     tagline: '225x39x30 cm méretű, tágas tetőbox extra csomagok szállításához.',
     specs: {
       méret: '225 x 39 x 30 cm',
@@ -142,7 +157,7 @@ export const ACCESSORIES = [
     type: 'Téli felszerelés',
     price: '1 000',
     deposit: '0 Ft',
-    photo: 'https://vorosbenjamin.github.io/vantogo-frontend/assets/accessories/holanc.jpg',
+    photo: '/assets/accessories/holanc.jpg',
     tagline: 'Biztonságos és megbízható közlekedés téli, havas útviszonyok között.',
     specs: {
       típus: 'Gyors rögzítésű hólánc',
@@ -159,7 +174,7 @@ export const ACCESSORIES = [
     type: 'Szállítóeszköz',
     price: '5 000',
     deposit: '30 000 Ft (Autóval bérlés esetén: 0 Ft)',
-    photo: 'https://vorosbenjamin.github.io/vantogo-frontend/assets/accessories/kerekpartarto.png',
+    photo: '/assets/accessories/kerekpartarto.png',
     tagline: 'Vonóhorogra szerelhető, lehajtható kerékpártartó 3 bicikli szállításához.',
     specs: {
       kapacitás: '3 db kerékpár',

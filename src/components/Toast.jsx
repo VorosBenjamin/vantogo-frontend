@@ -17,7 +17,7 @@ export function Toast() {
   if (!msg) return null;
 
   return (
-    <div style={{
+    <div className="toast-message" role="status" aria-live="polite" style={{
       position: 'fixed',
       bottom: '30px',
       left: '50%',

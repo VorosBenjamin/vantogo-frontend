@@ -1,0 +1,12 @@
+---
+import SitePage from '../../components/SitePage.astro';
+const { id = '' } = Astro.params;
+---
+
+<SitePage
+  view="accessory-details"
+  selectedId={id}
+  title="Kiegészítő részletek és ajánlatkérés | VanToGo!"
+  description="Utazási kiegészítő részletei, díjszámítás és online ajánlatkérés."
+  canonicalPath={`/kiegeszitok/${id}/`}
+/>

@@ -1,4 +1,5 @@
-import React, { useState, useRef } from 'react';
+import React, { useMemo, useState } from 'react';
+import PropTypes from 'prop-types';
 import { Header } from './components/Header';
 import { Home } from './components/Home';
 import { Footer } from './components/Footer';
@@ -11,13 +12,24 @@ import { AdatvedelemPage } from './components/AdatvedelemPage';
 import { ContactPage } from './components/ContactPage';
 import { AccessoriesPage } from './components/AccessoriesPage';
 import { AccessoryDetails } from './components/AccessoryDetails';
-import { FLEET } from './components/data';
+import { CatalogProvider, useCatalog } from './components/CatalogContext';
+import { Toast } from './components/Toast';
 import './styles.css';
 
-export function VanToGoApp() {
-  const [view, setView] = useState('home'); // 'home' | 'fleet' | 'faq' | 'aszf' | 'privacy' | 'contact' | 'accessories' | 'accessory-details' | 'vehicle-details'
-  const [selectedVehicle, setSelectedVehicle] = useState(null);
-  const [selectedAccessory, setSelectedAccessory] = useState(null);
+const ROUTES = {
+  home: '/',
+  fleet: '/autok/',
+  accessories: '/kiegeszitok/',
+  segments: '/#kinek',
+  faq: '/gyik/',
+  contact: '/kapcsolat/',
+  aszf: '/aszf/',
+  privacy: '/adatvedelem/',
+};
+
+function VanToGoShell({ initialView = 'home', selectedId = '' }) {
+  const { fleet, accessories } = useCatalog();
+  const [view] = useState(initialView);
   const [bookingData, setBookingData] = useState(null); // When not null, opens BookingModal
   const [searchParams, setSearchParams] = useState({ 
     startDate: '', 
@@ -26,58 +38,33 @@ export function VanToGoApp() {
     returnTime: '08:00'
   });
 
-  const rootRef = useRef(null);
-
-  const dispatchWixEvent = (eventName, data) => {
-    if (rootRef.current) {
-      rootRef.current.dispatchEvent(new CustomEvent(eventName, { 
-        detail: data, 
-        bubbles: true, 
-        composed: true 
-      }));
-    }
-  };
-  const scrollToAnchor = (anchorId) => {
-    const el = document.getElementById(anchorId);
-    if (el) {
-      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-  };
+  const selectedVehicle = useMemo(
+    () => fleet.find((vehicle) => vehicle.id === selectedId) ?? (selectedId ? null : fleet[0] ?? null),
+    [fleet, selectedId],
+  );
+  const selectedAccessory = useMemo(
+    () => accessories.find((accessory) => accessory.id === selectedId) ?? (selectedId ? null : accessories[0] ?? null),
+    [accessories, selectedId],
+  );
 
   const navigate = (id) => {
-    
-    // In Wix environment, we also dispatch an event
-    dispatchWixEvent('vantogoNavigate', id);
-
-    setView(id);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-
-    if (id === 'segments') {
-      // If we want to view segments, they are on the Home page, so switch to home first
-      setView('home');
-      // Wait for React to render the Home view before scrolling
-      setTimeout(() => {
-        scrollToAnchor('segments-anchor');
-      }, 100);
-    }
+    const target = ROUTES[id] || ROUTES.home;
+    window.location.assign(target);
   };
 
   const openVehicle = (vehicle) => {
-    setSelectedVehicle(vehicle);
-    setView('vehicle-details');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.location.assign(`/autok/${encodeURIComponent(vehicle.id)}/`);
   };
 
   const openAccessory = (accessory) => {
-    setSelectedAccessory(accessory);
-    setView('accessory-details');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.location.assign(`/kiegeszitok/${encodeURIComponent(accessory.id)}/`);
   };
 
   // Called when clicking "Foglalj most" globally
   const handleGlobalBook = () => {
     // If we are already viewing a vehicle, use it
-    const vehicle = selectedVehicle || FLEET[0];
+    const vehicle = selectedVehicle || fleet[0];
+    if (!vehicle) return;
     setBookingData({
       vehicleId: vehicle.id,
       vehicleName: vehicle.name,
@@ -96,15 +83,24 @@ export function VanToGoApp() {
     setBookingData(computedData);
   };
 
-  // Called when customer submits the final form inside the Modal
-  const handleConfirmBooking = (finalBookingData) => {
-    
-    // Dispatch custom event for Wix Velo to capture and save to database
-    dispatchWixEvent('vantogoBookingSubmit', finalBookingData);
+  const handleConfirmBooking = async (finalBookingData) => {
+    const response = await fetch('/api/rental-request', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+      body: JSON.stringify(finalBookingData),
+    });
+    const result = await response.json().catch(() => ({}));
+    if (!response.ok) {
+      const error = new Error(result.error || 'Az ajánlatkérés mentése nem sikerült.');
+      error.code = result.code;
+      error.field = result.field;
+      throw error;
+    }
+    return result;
   };
 
   return (
-    <div ref={rootRef} className="app-scroll" style={{ backgroundColor: 'var(--paper)', minHeight: '100vh' }}>
+    <div className="app-scroll" style={{ backgroundColor: 'var(--paper)', minHeight: '100vh' }}>
       <Header current={view} navigate={navigate} onBook={handleGlobalBook} />
       
       {view === 'home' && (
@@ -140,25 +136,25 @@ export function VanToGoApp() {
       {view === 'contact' && (
         <ContactPage navigate={navigate} />
       )}
-      
+
       {view === 'vehicle-details' && (
-        <VehicleDetails 
-          v={selectedVehicle} 
-          onBack={() => navigate('fleet')} 
-          onBook={handleVehicleBook} 
+        selectedVehicle ? <VehicleDetails
+          v={selectedVehicle}
+          onBack={() => navigate('fleet')}
+          onBook={handleVehicleBook}
           searchParams={searchParams}
           setSearchParams={setSearchParams}
-        />
+        /> : <MissingItem kind="jármű" />
       )}
 
       {view === 'accessory-details' && (
-        <AccessoryDetails 
-          a={selectedAccessory} 
-          onBack={() => navigate('accessories')} 
-          onBook={handleVehicleBook} 
+        selectedAccessory ? <AccessoryDetails
+          a={selectedAccessory}
+          onBack={() => navigate('accessories')}
+          onBook={handleVehicleBook}
           searchParams={searchParams}
           setSearchParams={setSearchParams}
-        />
+        /> : <MissingItem kind="kiegészítő" />
       )}
       
       <Footer navigate={navigate} />
@@ -175,9 +171,32 @@ export function VanToGoApp() {
   );
 }
 
-import { Toast } from './components/Toast';
+function MissingItem({ kind }) {
+  return (
+    <section className="container section" style={{ minHeight: '55vh', textAlign: 'center' }}>
+      <h1>Ez a {kind} nem található</h1>
+      <p style={{ color: 'var(--fg-muted)', marginBottom: '24px' }}>Lehet, hogy az oldal címe megváltozott, vagy a tétel már nem elérhető.</p>
+      <a className="btn btn--primary" href={kind === 'jármű' ? '/autok/' : '/kiegeszitok/'}>Vissza a kínálathoz</a>
+    </section>
+  );
+}
 
-// Ensure propTypes are set for react-to-webcomponent compatibility
-import PropTypes from 'prop-types';
-VanToGoApp.propTypes = {};
+export function VanToGoApp({ initialCatalog, ...props }) {
+  return (
+    <CatalogProvider initialCatalog={initialCatalog}>
+      <VanToGoShell {...props} />
+    </CatalogProvider>
+  );
+}
+
+VanToGoApp.propTypes = {
+  initialView: PropTypes.string,
+  selectedId: PropTypes.string,
+  initialCatalog: PropTypes.shape({
+    fleet: PropTypes.array,
+    accessories: PropTypes.array,
+    source: PropTypes.string,
+  }),
+};
+
 export default VanToGoApp;

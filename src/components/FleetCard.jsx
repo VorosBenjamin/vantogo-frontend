@@ -3,7 +3,19 @@ import { Icon, Button, Spec, Badge } from './Primitives';
 
 export function FleetCard({ v, onOpen }) {
   return (
-    <article className="vehicle" onClick={() => onOpen && onOpen(v)}>
+    <article
+      className="vehicle"
+      onClick={() => onOpen?.(v)}
+      onKeyDown={event => {
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault();
+          onOpen?.(v);
+        }
+      }}
+      role="button"
+      tabIndex={0}
+      aria-label={`${v.name} részleteinek megnyitása`}
+    >
       <div className="ph">
         <img src={v.photo} alt={v.name} loading="lazy" />
         {v.popular && <span className="badge badge--amber-solid tag"><Icon name="star" size={14} className="ic" />Népszerű</span>}
@@ -17,7 +29,7 @@ export function FleetCard({ v, onOpen }) {
         </div>
         <div className="foot">
           <div className="price">{v.price} <small>Ft / nap-tól</small></div>
-          <Button variant="primary" size="sm" iconRight="arrow-right">Részletek</Button>
+          <Button variant="primary" size="sm" iconRight="arrow-right" tabIndex={-1}>Részletek</Button>
         </div>
       </div>
     </article>
@@ -26,6 +38,7 @@ export function FleetCard({ v, onOpen }) {
 
 function FAQItem({ question, answer, isOpen, onToggle }) {
   const contentRef = React.useRef(null);
+  const contentId = React.useId();
   const [height, setHeight] = React.useState(0);
 
   React.useEffect(() => {
@@ -38,11 +51,11 @@ function FAQItem({ question, answer, isOpen, onToggle }) {
 
   return (
     <div className={'faq-item' + (isOpen ? ' open' : '')}>
-      <button className="faq-q" onClick={onToggle} type="button">
+      <button className="faq-q" onClick={onToggle} type="button" aria-expanded={isOpen} aria-controls={contentId}>
         {question}
         <Icon name="chevron-down" size={20} className="ic" style={{ transform: isOpen ? 'rotate(180deg)' : 'none' }} />
       </button>
-      <div className="faq-a" style={{ maxHeight: height }}>
+      <div className="faq-a" id={contentId} style={{ maxHeight: height }} aria-hidden={!isOpen}>
         <div className="faq-a-inner" ref={contentRef}>{answer}</div>
       </div>
     </div>

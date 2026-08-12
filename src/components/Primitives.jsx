@@ -1,44 +1,125 @@
 import React from 'react';
-import * as LucideIcons from 'lucide-react';
+import {
+  ArrowLeft,
+  ArrowRight,
+  ArrowUp,
+  BadgePercent,
+  Briefcase,
+  CalendarCheck,
+  Check,
+  CheckCircle,
+  ChevronDown,
+  Cog,
+  Compass,
+  Download,
+  Edit,
+  FileText,
+  Gauge,
+  Globe,
+  Heart,
+  Info,
+  Mail,
+  MapPin,
+  Menu,
+  PartyPopper,
+  Phone,
+  RotateCw,
+  Search,
+  SearchCode,
+  ShieldCheck,
+  SlidersHorizontal,
+  Sparkles,
+  Star,
+  TentTree,
+  Users,
+  Volleyball,
+  X,
+} from 'lucide-react';
+
+const ICONS = {
+  ArrowLeft,
+  ArrowRight,
+  ArrowUp,
+  BadgePercent,
+  Briefcase,
+  CalendarCheck,
+  Check,
+  CheckCircle,
+  ChevronDown,
+  Cog,
+  Compass,
+  Download,
+  Edit,
+  FileText,
+  Gauge,
+  Globe,
+  Heart,
+  Info,
+  Mail,
+  MapPin,
+  Menu,
+  PartyPopper,
+  Phone,
+  RotateCw,
+  Search,
+  SearchCode,
+  ShieldCheck,
+  SlidersHorizontal,
+  Sparkles,
+  Star,
+  TentTree,
+  Users,
+  Volleyball,
+  X,
+};
 
 export function Icon({ name, size = 20, color, stroke = 2, className, style }) {
   // Convert kebab-case to PascalCase
   const pascalName = name.split('-').map(s => s.charAt(0).toUpperCase() + s.slice(1)).join('');
-  const LucideIcon = LucideIcons[pascalName] || LucideIcons[name];
+  const LucideIcon = ICONS[pascalName] || ICONS[name];
   
   if (!LucideIcon) return null;
   
   return <LucideIcon size={size} color={color} strokeWidth={stroke} className={className} style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', color, ...style }} />;
 }
 
-export function Mark({ height = 40, body = '#16753F', glass = '#FAF6EE', wheel = '#16201A' }) {
+export function Mark({ height = 40, body = '#16753F', glass = '#FAF6EE', hub, wheel = '#16201A', bg }) {
+  const hubColor = hub || glass;
   return (
-    <svg height={height} viewBox="0 0 116 52" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ display: 'block' }}>
-      <path d="M6 39 L4 38 Q2 37 2.2 33 L3 27 Q3.4 21 9 18.6 L13 17.2 L23 9.9 Q24.6 8 28 8 L101 8 Q107 8 107.6 13.6 L108 34 Q108 37.6 104 37.6 L99.6 37.6 A8.6 8.6 0 0 0 84.4 37.6 L34.6 37.6 A8.6 8.6 0 0 0 19.4 37.6 L8 37.6 Q6 37.8 6 39 Z" fill={body} />
-      <path d="M31 10.6 L99.5 10.6 Q101 10.6 101 12.1 L101 18.8 L24.6 18.8 Q23.6 14 31 10.6 Z" fill={glass} />
-      <rect x="43.4" y="10.6" width="2.5" height="8.2" fill={body} />
-      <rect x="66" y="10.6" width="2.5" height="8.2" fill={body} />
-      <rect x="88.4" y="10.6" width="2.5" height="8.2" fill={body} />
-      <rect x="24.6" y="20.4" width="76.4" height="1.5" rx="0.75" fill={glass} opacity="0.5" />
-      <circle cx="27" cy="37.6" r="7.6" fill={wheel} /><circle cx="27" cy="37.6" r="3.7" fill={glass} /><circle cx="27" cy="37.6" r="1.3" fill={wheel} />
-      <circle cx="92" cy="37.6" r="7.6" fill={wheel} /><circle cx="92" cy="37.6" r="3.7" fill={glass} /><circle cx="92" cy="37.6" r="1.3" fill={wheel} />
+    <svg height={height} viewBox="0 0 82 50" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ display: 'block' }} aria-hidden="true">
+      <path d="M7 11 Q7 8 10 8 L56 8 Q60 8 62.5 10.5 L71 19.5 Q74 22.5 74 27 L74 35 L65 35 A6.2 6.2 0 0 0 52.6 35 L31 35 A6.2 6.2 0 0 0 18.6 35 L10 35 Q7 35 7 32 Z" fill={body} />
+      <path d="M55 12.5 L61 12.5 L68.5 19.4 L55 19.4 Z" fill={glass} />
+      <path d="M12 12.6 Q12 12 12.8 12 L51 12 Q51.8 12 51.8 12.8 L51.8 19 Q51.8 19.6 51 19.6 L12.8 19.6 Q12 19.6 12 19 Z" fill={glass} />
+      <rect x="24.5" y="12" width="2.4" height="7.6" fill={body} />
+      <rect x="37.5" y="12" width="2.4" height="7.6" fill={body} />
+      {bg && <circle cx="24.8" cy="36" r="7.5" fill={bg} />}
+      <circle cx="24.8" cy="36" r="6.2" fill={wheel} /><circle cx="24.8" cy="36" r="2.4" fill={hubColor} />
+      {bg && <circle cx="58.8" cy="36" r="7.5" fill={bg} />}
+      <circle cx="58.8" cy="36" r="6.2" fill={wheel} /><circle cx="58.8" cy="36" r="2.4" fill={hubColor} />
     </svg>
   );
 }
 
-export function Logo({ markHeight = 36, fontSize = 24, dark = false, onClick }) {
+export function Logo({ markHeight = 36, fontSize = 24, dark = false, bg, onClick, href = '/' }) {
   return (
-    <div className="brand-lockup" onClick={onClick}>
-      <Mark height={markHeight} body={dark ? '#FAF6EE' : '#16753F'} glass={dark ? '#16753F' : '#FAF6EE'} wheel={dark ? '#0A2A1D' : '#16201A'} />
+    <a className="brand-lockup" href={href} onClick={onClick} aria-label="VanToGo kezdőlap">
+      <Mark
+        height={markHeight}
+        body={dark ? '#E7A634' : '#16753F'}
+        glass={dark ? '#0E3B28' : '#FAF6EE'}
+        hub={dark ? '#FAF6EE' : undefined}
+        wheel="#16201A"
+        bg={dark ? (bg || '#0E3B28') : undefined}
+      />
       <span className="wm" style={{ fontSize, color: dark ? '#fff' : undefined }}>VanToGo<span className="bang">!</span></span>
-    </div>
+    </a>
   );
 }
 
-export function Button({ variant = 'primary', size, icon, iconRight, children, onClick, type, className = '' }) {
+export function Button({ variant = 'primary', size, icon, iconRight, children, onClick, type, className = '', ...buttonProps }) {
   const cls = ['btn', `btn--${variant}`, size ? `btn--${size}` : '', className].filter(Boolean).join(' ');
   return (
-    <button type={type || 'button'} className={cls} onClick={onClick}>
+    <button type={type || 'button'} className={cls} onClick={onClick} {...buttonProps}>
       {icon && <Icon name={icon} size={size === 'sm' ? 16 : 19} className="ic" />}
       {children}
       {iconRight && <Icon name={iconRight} size={size === 'sm' ? 16 : 19} className="ic" />}
