@@ -497,8 +497,9 @@ export function BookingModal({ bookingData, onClose, onConfirm }) {
                 </div>
                 <p className="required-fields-note"><span aria-hidden="true">*</span> A csillaggal jelölt mezők kitöltése kötelező.</p>
                 <div className="field">
-                  <label>Teljes név <span className="required-mark" aria-hidden="true">*</span><span className="sr-only"> (kötelező)</span></label>
+                  <label htmlFor="booking-name">Teljes név <span className="required-mark" aria-hidden="true">*</span><span className="sr-only"> (kötelező)</span></label>
                   <input
+                    id="booking-name"
                     type="text"
                     className="input"
                     placeholder="Minta János"
@@ -509,8 +510,9 @@ export function BookingModal({ bookingData, onClose, onConfirm }) {
                 </div>
 
                 <div className="field">
-                  <label>E-mail cím <span className="required-mark" aria-hidden="true">*</span><span className="sr-only"> (kötelező)</span></label>
+                  <label htmlFor="booking-email">E-mail cím <span className="required-mark" aria-hidden="true">*</span><span className="sr-only"> (kötelező)</span></label>
                   <input
+                    id="booking-email"
                     type="email"
                     className="input"
                     placeholder="janos@minta.hu"
@@ -521,8 +523,9 @@ export function BookingModal({ bookingData, onClose, onConfirm }) {
                 </div>
 
                 <div className="field">
-                  <label>Telefonszám <span className="required-mark" aria-hidden="true">*</span><span className="sr-only"> (kötelező)</span></label>
+                  <label htmlFor="booking-phone">Telefonszám <span className="required-mark" aria-hidden="true">*</span><span className="sr-only"> (kötelező)</span></label>
                   <input
+                    id="booking-phone"
                     type="tel"
                     className="input"
                     placeholder="+36 30 123 4567"
@@ -533,8 +536,9 @@ export function BookingModal({ bookingData, onClose, onConfirm }) {
                 </div>
 
                 <div className="field">
-                  <label>Megjegyzés / Egyedi kérések (opcionális)</label>
+                  <label htmlFor="booking-note">Megjegyzés / Egyedi kérések (opcionális)</label>
                   <textarea
+                    id="booking-note"
                     className="input"
                     placeholder="Pl. tetőboxot szeretnék kérni, gyermekülés igénye stb."
                     rows="3"
@@ -598,6 +602,9 @@ export function BookingModal({ bookingData, onClose, onConfirm }) {
                 <span style={{ display: 'block', fontSize: '13px', color: 'var(--go-700)', lineHeight: '1.4' }}>
                   A bérleti szerződés gyors előkészítéséhez megadhatod az adatokat most, vagy elküldheted nélkülük az ajánlatkérést.
                 </span>
+                <span style={{ display: 'block', fontSize: '12.5px', color: 'var(--go-800)', lineHeight: '1.4', marginTop: '5px', fontWeight: 700 }}>
+                  A születési idő az életkor ellenőrzéséhez kihagyás esetén is kötelező.
+                </span>
               </div>
             </div>
 
@@ -610,7 +617,7 @@ export function BookingModal({ bookingData, onClose, onConfirm }) {
                 </div>
               )}
               <div className="fields" style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+                <div className="modal-field-grid">
                   <div className="field">
                     <label>Személyi igazolvány száma</label>
                     <input
@@ -635,7 +642,7 @@ export function BookingModal({ bookingData, onClose, onConfirm }) {
                   </div>
                 </div>
 
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+                <div className="modal-field-grid">
                   <div className="field">
                     <label>Születési hely</label>
                     <input
@@ -648,8 +655,9 @@ export function BookingModal({ bookingData, onClose, onConfirm }) {
                     />
                   </div>
                   <div className="field">
-                    <label>Születési idő</label>
+                    <label htmlFor="booking-birth-date">Születési idő <span className="required-mark" aria-hidden="true">*</span><span className="sr-only"> (kötelező)</span></label>
                     <input
+                      id="booking-birth-date"
                       type="date"
                       className="input"
                       required
@@ -674,7 +682,7 @@ export function BookingModal({ bookingData, onClose, onConfirm }) {
                   </div>
                 </div>
 
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 3fr', gap: '12px' }}>
+                <div className="modal-field-grid modal-field-grid--address">
                   <div className="field">
                     <label>Irányítószám</label>
                     <input
@@ -731,7 +739,7 @@ export function BookingModal({ bookingData, onClose, onConfirm }) {
                   onClick={handleSkipStep2}
                   disabled={submitting}
                 >
-                  Kihagyás és befejezés
+                  Dokumentumadatok kihagyása és befejezés
                 </Button>
               </div>
             </form>

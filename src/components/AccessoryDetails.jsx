@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Icon, Button, SpecStat } from './Primitives';
 import { useCatalog } from './CatalogContext';
 
@@ -7,6 +7,7 @@ export function AccessoryDetails({ a, onBack, onBook, searchParams, setSearchPar
   const [days, setDays] = useState(0);
   const [totalPrice, setTotalPrice] = useState(0);
   const [deliveryOption, setDeliveryOption] = useState('telephely');
+  const bookingFormRef = useRef(null);
 
   const { startDate, endDate, pickupTime, returnTime } = searchParams;
 
@@ -87,6 +88,19 @@ export function AccessoryDetails({ a, onBack, onBook, searchParams, setSearchPar
   };
 
   const formattedTotalPrice = totalPrice.toLocaleString('hu-HU') + ' Ft';
+
+  const handleMobileBookingClick = (e) => {
+    if (!startDate || !endDate) {
+      bookingFormRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      const missingField = !startDate
+        ? bookingFormRef.current?.querySelector('input[type="date"]')
+        : bookingFormRef.current?.querySelectorAll('input[type="date"]')?.[1];
+      window.setTimeout(() => missingField?.focus({ preventScroll: true }), 450);
+      return;
+    }
+
+    handleBookingSubmit(e);
+  };
 
   return (
     <div className="view container section" style={{ paddingTop: '32px' }}>
@@ -188,7 +202,7 @@ export function AccessoryDetails({ a, onBack, onBook, searchParams, setSearchPar
         </div>
 
         {/* Jobb oldali sticky foglalási sziget */}
-        <aside className="book-side">
+        <aside className="book-side" ref={bookingFormRef}>
           <div className="price-row">
             <span style={{ color: 'var(--fg-muted)', fontWeight: 600 }}>Bérleti díj</span>
             <div className="big">
@@ -206,8 +220,9 @@ export function AccessoryDetails({ a, onBack, onBook, searchParams, setSearchPar
               {/* Átvétel dátum + időpont egy sorban */}
               <div className="datetime-grid">
                 <div className="field">
-                  <label>Átvétel dátuma</label>
+                  <label htmlFor="accessory-start-date">Átvétel dátuma</label>
                   <input
+                    id="accessory-start-date"
                     type="date"
                     className="input"
                     value={startDate}
@@ -216,8 +231,9 @@ export function AccessoryDetails({ a, onBack, onBook, searchParams, setSearchPar
                   />
                 </div>
                 <div className="field">
-                  <label>Időpont</label>
+                  <label htmlFor="accessory-pickup-time">Időpont</label>
                   <select
+                    id="accessory-pickup-time"
                     className="select"
                     value={pickupTime}
                     onChange={e => updateSearchParam('pickupTime', e.target.value)}
@@ -230,8 +246,9 @@ export function AccessoryDetails({ a, onBack, onBook, searchParams, setSearchPar
               {/* Leadás dátum + időpont egy sorban */}
               <div className="datetime-grid">
                 <div className="field">
-                  <label>Leadás dátuma</label>
+                  <label htmlFor="accessory-end-date">Leadás dátuma</label>
                   <input
+                    id="accessory-end-date"
                     type="date"
                     className="input"
                     value={endDate}
@@ -240,8 +257,9 @@ export function AccessoryDetails({ a, onBack, onBook, searchParams, setSearchPar
                   />
                 </div>
                 <div className="field">
-                  <label>Időpont</label>
+                  <label htmlFor="accessory-return-time">Időpont</label>
                   <select
+                    id="accessory-return-time"
                     className="select"
                     value={returnTime}
                     onChange={e => updateSearchParam('returnTime', e.target.value)}
@@ -335,7 +353,7 @@ export function AccessoryDetails({ a, onBack, onBook, searchParams, setSearchPar
             </div>
           )}
         </div>
-        <Button variant="accent" icon="calendar-check" onClick={handleBookingSubmit}>
+        <Button variant="accent" icon="calendar-check" onClick={handleMobileBookingClick}>
           {days > 0 ? 'Foglalás' : 'Foglalási adatok'}
         </Button>
       </div>

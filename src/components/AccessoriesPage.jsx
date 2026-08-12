@@ -33,6 +33,7 @@ export function AccessoriesPage({ openAccessory }) {
           {categories.map(cat => (
             <button
               key={cat.id}
+              className="accessory-filter-btn"
               onClick={() => setFilterType(cat.id)}
               style={{
                 padding: '10px 20px',

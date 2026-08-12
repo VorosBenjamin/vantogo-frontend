@@ -33,7 +33,7 @@ export function Footer({ navigate }) {
             <h5>Kapcsolat</h5>
             <p className="muted">
               Budapest X. kerület,<br />Diósgyőri utca 14.<br /><br />
-              <a href="mailto:info@vantogo.hu" style={{ display: 'inline', padding: 0 }}>info@vantogo.hu</a><br />
+              <a href="mailto:info@vantogo.hu" className="footer-contact-link">info@vantogo.hu</a><br />
               Házhozszállítás Pest megyében.
             </p>
           </div>

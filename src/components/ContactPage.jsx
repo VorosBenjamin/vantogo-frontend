@@ -85,7 +85,7 @@ export function ContactPage({ navigate }) {
                 gap: '12px',
                 marginTop: 'auto'
               }}>
-                <a href={`tel:${member.phone.replace(/\s/g, '')}`} style={{ 
+                <a className="contact-link" href={`tel:${member.phone.replace(/\s/g, '')}`} style={{
                   display: 'flex', 
                   alignItems: 'center', 
                   gap: '10px', 
@@ -98,7 +98,7 @@ export function ContactPage({ navigate }) {
                   {member.phone}
                 </a>
 
-                <a href={`mailto:${member.email}`} style={{ 
+                <a className="contact-link" href={`mailto:${member.email}`} style={{
                   display: 'flex', 
                   alignItems: 'center', 
                   gap: '10px', 

@@ -15,23 +15,23 @@ export function HeroBooking({ onSubmit, searchParams = {}, setSearchParams }) {
     <div className="booking float">
       <div className="booking-row">
         <div className="field">
-          <label>Jármű</label>
-          <select className="select" name="vehicleId" value={searchParams.vehicleId || ''} onChange={handleChange}>
+          <label htmlFor="hero-vehicle">Jármű</label>
+          <select id="hero-vehicle" className="select" name="vehicleId" value={searchParams.vehicleId || ''} onChange={handleChange}>
             <option value="">Bármelyik kisbusz</option>
             {fleet.map(v => <option key={v.id} value={v.id}>{v.name}</option>)}
           </select>
         </div>
         <div className="field">
-          <label>Átvétel</label>
-          <input type="date" className="input" name="startDate" value={searchParams.startDate || ''} onChange={handleChange} />
+          <label htmlFor="hero-start-date">Átvétel</label>
+          <input id="hero-start-date" type="date" className="input" name="startDate" value={searchParams.startDate || ''} onChange={handleChange} />
         </div>
         <div className="field">
-          <label>Visszahozás</label>
-          <input type="date" className="input" name="endDate" value={searchParams.endDate || ''} onChange={handleChange} />
+          <label htmlFor="hero-end-date">Visszahozás</label>
+          <input id="hero-end-date" type="date" className="input" name="endDate" value={searchParams.endDate || ''} onChange={handleChange} />
         </div>
         <div className="field">
-          <label>Létszám</label>
-          <select className="select" name="seats" value={searchParams.seats || ''} onChange={handleChange}>
+          <label htmlFor="hero-seats">Létszám</label>
+          <select id="hero-seats" className="select" name="seats" value={searchParams.seats || ''} onChange={handleChange}>
             <option value="">Hány fő?</option>
             <option value="1-8">1–8 fő</option>
             <option value="9">9 fő</option>

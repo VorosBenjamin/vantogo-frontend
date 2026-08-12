@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Icon, Button, SpecStat, Badge } from './Primitives';
 import { useCatalog } from './CatalogContext';
 
@@ -8,6 +8,7 @@ export function VehicleDetails({ v, onBack, onBook, searchParams, setSearchParam
   const [deliveryOption, setDeliveryOption] = useState('telephely'); // 'telephely' | 'hazhoz'
   const [days, setDays] = useState(0);
   const [totalPrice, setTotalPrice] = useState(0);
+  const bookingFormRef = useRef(null);
 
   const { startDate, endDate, pickupTime, returnTime } = searchParams;
 
@@ -86,6 +87,19 @@ export function VehicleDetails({ v, onBack, onBook, searchParams, setSearchParam
   };
 
   const formattedTotalPrice = totalPrice.toLocaleString('hu-HU') + ' Ft';
+
+  const handleMobileBookingClick = (e) => {
+    if (!startDate || !endDate) {
+      bookingFormRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      const missingField = !startDate
+        ? bookingFormRef.current?.querySelector('input[type="date"]')
+        : bookingFormRef.current?.querySelectorAll('input[type="date"]')?.[1];
+      window.setTimeout(() => missingField?.focus({ preventScroll: true }), 450);
+      return;
+    }
+
+    handleBookingSubmit(e);
+  };
 
   return (
     <div className="view container section" style={{ paddingTop: '32px' }}>
@@ -193,7 +207,7 @@ export function VehicleDetails({ v, onBack, onBook, searchParams, setSearchParam
         </div>
 
         {/* Jobb oldali sticky foglalási sziget */}
-        <aside className="book-side">
+        <aside className="book-side" ref={bookingFormRef}>
           <div className="price-row">
             <span style={{ color: 'var(--fg-muted)', fontWeight: 600 }}>Bérleti díj</span>
             <div className="big">
@@ -211,8 +225,9 @@ export function VehicleDetails({ v, onBack, onBook, searchParams, setSearchParam
               {/* Átvétel dátum + időpont egy sorban */}
               <div className="datetime-grid">
                 <div className="field">
-                  <label>Átvétel dátuma</label>
+                  <label htmlFor="vehicle-start-date">Átvétel dátuma</label>
                   <input
+                    id="vehicle-start-date"
                     type="date"
                     className="input"
                     value={startDate}
@@ -221,8 +236,9 @@ export function VehicleDetails({ v, onBack, onBook, searchParams, setSearchParam
                   />
                 </div>
                 <div className="field">
-                  <label>Időpont</label>
+                  <label htmlFor="vehicle-pickup-time">Időpont</label>
                   <select
+                    id="vehicle-pickup-time"
                     className="select"
                     value={pickupTime}
                     onChange={e => updateSearchParam('pickupTime', e.target.value)}
@@ -235,8 +251,9 @@ export function VehicleDetails({ v, onBack, onBook, searchParams, setSearchParam
               {/* Leadás dátum + időpont egy sorban */}
               <div className="datetime-grid">
                 <div className="field">
-                  <label>Leadás dátuma</label>
+                  <label htmlFor="vehicle-end-date">Leadás dátuma</label>
                   <input
+                    id="vehicle-end-date"
                     type="date"
                     className="input"
                     value={endDate}
@@ -245,8 +262,9 @@ export function VehicleDetails({ v, onBack, onBook, searchParams, setSearchParam
                   />
                 </div>
                 <div className="field">
-                  <label>Időpont</label>
+                  <label htmlFor="vehicle-return-time">Időpont</label>
                   <select
+                    id="vehicle-return-time"
                     className="select"
                     value={returnTime}
                     onChange={e => updateSearchParam('returnTime', e.target.value)}
@@ -327,7 +345,7 @@ export function VehicleDetails({ v, onBack, onBook, searchParams, setSearchParam
             </div>
           )}
         </div>
-        <Button variant="accent" icon="calendar-check" onClick={handleBookingSubmit}>
+        <Button variant="accent" icon="calendar-check" onClick={handleMobileBookingClick}>
           {days > 0 ? 'Foglalás' : 'Foglalási adatok'}
         </Button>
       </div>
