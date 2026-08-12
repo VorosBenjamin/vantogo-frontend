@@ -134,19 +134,19 @@ export function VehicleDetails({ v, onBack, onBook, searchParams, setSearchParam
               </h4>
               <ul>
                 <li>
-                  <Icon name="check" size={14} className="ic" /> 
+                  <Icon name="check" size={14} className="ic" />
                   <span><strong>Üzemanyag:</strong> {v.fuel || 'Dízel'}</span>
                 </li>
                 <li>
-                  <Icon name="check" size={14} className="ic" /> 
+                  <Icon name="check" size={14} className="ic" />
                   <span><strong>Fogyasztás:</strong> {v.consumption || '7.5 L / 100 km'}</span>
                 </li>
                 <li>
-                  <Icon name="check" size={14} className="ic" /> 
+                  <Icon name="check" size={14} className="ic" />
                   <span><strong>Meghajtás:</strong> {v.driveName || 'Elsőkerék-hajtás'}</span>
                 </li>
                 <li>
-                  <Icon name="check" size={14} className="ic" /> 
+                  <Icon name="check" size={14} className="ic" />
                   <span><strong>Váltó típusa:</strong> {v.trans}</span>
                 </li>
               </ul>

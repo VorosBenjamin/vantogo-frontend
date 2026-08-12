@@ -21,12 +21,12 @@ export function FleetPage({ openVehicle }) {
     const is8Seats = v.seats.includes('8');
     const is9Seats = v.seats.includes('9');
     
-    const matchesSeats = 
-      (seatsFilter.seats8 && is8Seats) || 
+    const matchesSeats =
+      (seatsFilter.seats8 && is8Seats) ||
       (seatsFilter.seats9 && is9Seats);
 
     const vDrive = v.drive || 'fwd';
-    const matchesDrive = 
+    const matchesDrive =
       (driveFilter.fwd && vDrive === 'fwd') ||
       (driveFilter.rwd && vDrive === 'rwd') ||
       (driveFilter.awd && vDrive === 'awd');

@@ -13,8 +13,8 @@ export function AccessoriesPage({ openAccessory }) {
     { id: 'Szállítóeszköz', label: 'Szállítóeszközök' }
   ];
 
-  const filtered = filterType === 'all' 
-    ? accessories 
+  const filtered = filterType === 'all'
+    ? accessories
     : accessories.filter(a => a.type === filterType);
 
   return (

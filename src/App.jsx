@@ -136,22 +136,22 @@ function VanToGoShell({ initialView = 'home', selectedId = '' }) {
       {view === 'contact' && (
         <ContactPage navigate={navigate} />
       )}
-      
+
       {view === 'vehicle-details' && (
-        selectedVehicle ? <VehicleDetails 
-          v={selectedVehicle} 
-          onBack={() => navigate('fleet')} 
-          onBook={handleVehicleBook} 
+        selectedVehicle ? <VehicleDetails
+          v={selectedVehicle}
+          onBack={() => navigate('fleet')}
+          onBook={handleVehicleBook}
           searchParams={searchParams}
           setSearchParams={setSearchParams}
         /> : <MissingItem kind="jármű" />
       )}
 
       {view === 'accessory-details' && (
-        selectedAccessory ? <AccessoryDetails 
-          a={selectedAccessory} 
-          onBack={() => navigate('accessories')} 
-          onBook={handleVehicleBook} 
+        selectedAccessory ? <AccessoryDetails
+          a={selectedAccessory}
+          onBack={() => navigate('accessories')}
+          onBook={handleVehicleBook}
           searchParams={searchParams}
           setSearchParams={setSearchParams}
         /> : <MissingItem kind="kiegészítő" />
